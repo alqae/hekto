@@ -1,0 +1,41 @@
+@import "../../styles/init";
+
+$inactive-color: rgba(0, 0, 0, 0.5);
+
+.badge {
+  cursor: pointer;
+  display: inline-block;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: $inactive-color;
+  transition-property: all;
+  transition-duration: 500ms;
+
+  span {
+    color: $inactive-color;
+  }
+
+  &:not(.active):hover {
+    border-bottom-color: map-get($theme-colors, primary);
+
+    span {
+      color: map-get($theme-colors, primary);
+    }
+  }
+
+  &.active {
+    border-bottom-color: map-get($theme-colors, primary);
+
+    span {
+      color: map-get($theme-colors, primary);
+    }
+
+    &:hover {
+      border-bottom-color: $inactive-color;
+
+      span {
+        color: $inactive-color;
+      }
+    }
+  }
+}

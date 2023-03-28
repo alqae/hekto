@@ -1,0 +1,38 @@
+@import "../../styles/init";
+
+.control {
+  border-width: 1px;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border-color: $color-sub-text !important;
+}
+
+.menuList {
+  max-height: 300px;
+  overflow-y: auto;
+  position: relative;
+  box-sizing: border-box;
+  z-index: 999;
+
+  @include font(body, md, $color-black);
+
+  /* width */
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: rgba($color: map-get($theme-colors, primary), $alpha: 0.1);
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: map-get($theme-colors, primary);
+  }
+}
+
+.searchInput, .valueContainer, .singleValue {
+  @include font(body, md, $color-gray);
+  color: $color-gray !important;
+}

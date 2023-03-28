@@ -1,0 +1,33 @@
+@import "../../styles/init";
+
+.contactItem {
+
+  .square {
+    min-width: 45px;
+    height: 45px;
+    display: block;
+    background-color: $color-pink;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+
+  span {
+    display: block;
+  }
+
+  &:nth-child(1) .square {
+    background-color: $color-purple;
+  }
+
+  &:nth-child(2) .square {
+    background-color: $color-pink;
+  }
+
+  &:nth-child(3) .square {
+    background-color: $color-orange;
+  }
+
+  &:nth-child(4) .square {
+    background-color: $color-green;
+  }
+}

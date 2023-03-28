@@ -1,0 +1,15 @@
+@import "../../styles/init";
+
+.Tabs {
+  &__header {
+
+  }
+}
+
+.Tab {
+  cursor: pointer;
+
+  &.active {
+    text-decoration: underline;
+  }
+}

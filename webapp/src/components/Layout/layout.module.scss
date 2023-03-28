@@ -1,0 +1,26 @@
+@import "../../styles/init";
+
+.layout {
+
+  section {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 120px;
+
+    @include media-breakpoint-down(sm) {
+      margin-bottom: 60px;
+    }
+  }
+
+  section:first-of-type {
+    margin-top: 120px;
+
+    @include media-breakpoint-down(sm) {
+      margin-top: 60px;
+    }
+  }
+
+  section:last-child:not(section:only-child) {
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,108 @@
+
+.custom-scroll-bar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: transparent;
+}
+
+.custom-scroll-bar::-webkit-scrollbar-thumb,
+.custom-scroll-bar::-webkit-scrollbar-track {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  -moz-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+}
+
+.custom-scroll-bar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, .3);
+}
+
+.custom-scroll-bar::-webkit-scrollbar-track {
+  background-color: #F5F5F5;
+}
+
+.body-email {
+  padding-bottom: 30px;
+  background-color: red;
+}
+
+.body-email * {
+  color: inherit;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.body-email h1,
+.body-email h2,
+.body-email h3,
+.body-email h4 {
+  margin-top: 0;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.body-email h1 {
+  font-size: 22px;
+  line-height: 30px;
+}
+
+.body-email h2 {
+  font-size: 25px;
+  line-height: 30px;
+}
+
+.body-email h3 {
+  font-size: 23px;
+  line-height: 28px;
+}
+
+.body-email p {
+  margin-bottom: 10px;
+  font-size: 20px;
+  line-height: 25px;
+}
+
+.body-email .box a {
+  display: inline-block;
+  max-width: 250px;
+  border: 3px solid #FF9F0D;
+  transition-property: background-color;
+  transition-duration: 400ms;
+  transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  box-shadow: none;
+  outline: none;
+  color: #fff;
+  font-family: 'Helvatica', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.35;
+  letter-spacing: normal;
+  background-color: #FF9F0D;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  padding-right: 45px;
+  padding-left: 45px;
+  text-decoration: none;
+}
+
+.box {
+  width: 424px;
+  padding: 32px;
+  margin: 32px auto;
+  background-color: #fff;
+  filter: drop-shadow(0px 4mm 4mm rgba(0, 0, 0, 0.25));
+  box-shadow: 0px 4px 80px rgb(255 159 13 / 15%);
+  text-align: center;
+}
+
+header {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  background-color: #000;
+}
+
+footer {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  background-color: #000;
+}

@@ -1,0 +1,33 @@
+mutation SignUp(
+  $firstName: String!,
+  $lastName: String!,
+	$email: String!,
+  $password: String!
+) {
+  signUp(
+    firstName: $firstName,
+    lastName: $lastName,
+    email: $email,
+    password: $password
+  )
+}
+
+mutation SignIn($email: String!, $password: String!) {
+  signIn(email: $email, password: $password) {
+    token
+  }
+}
+
+mutation ActivateUser($token: String!) {
+  activeUser(token: $token) {
+    token
+  }
+}
+
+mutation ForgotPassword($email: String!) {
+  forgotPassword(email: $email)
+}
+
+mutation ResetPassword($token: String!, $password: String!) {
+  resetPassword(token: $token, password: $password)
+}

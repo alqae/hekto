@@ -1,0 +1,97 @@
+@import "../../styles/init";
+
+.perPage {
+  padding: 6px 8px !important;
+}
+
+.viewMode {
+  button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+    color: $color-navy-blue;
+    opacity: 0.5;
+
+    &:hover, &.active {
+      opacity: 1;
+    }
+  }
+}
+
+.sideBar {
+  border: 1px solid #F2F2F2;
+  border-radius: 6px;
+
+  .badgeContainer {
+    gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.pagination {
+  li {
+    display: inline-block;
+    margin-right: 14px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    a {
+      display: block;
+      width: 35px;
+      height: 35px;
+      border-width: 1px;
+      border-style: solid;
+      border-color: $color-gray;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      @include font(body, md);
+      color: $color-gray !important;
+      transition-property: background-color, border-color, color;
+      transition-duration: 250ms;
+      transition-timing-function: ease;
+
+      svg {
+        fill: map-get($theme-colors, primary);
+        font-size: 24px;
+      }
+
+      &:hover {
+        background-color: map-get($theme-colors, primary);
+        border-color: map-get($theme-colors, primary);
+        color: $color-white !important;
+
+        svg {
+          fill: $color-white;
+        }
+      }
+    }
+
+    &.active {
+      color: map-get($theme-colors, primary);
+
+      a, a:hover {
+        background-color: map-get($theme-colors, primary);
+        border-color: map-get($theme-colors, primary);
+        color: $color-white !important;
+      }
+    }
+
+    &.disabled a {
+      cursor: not-allowed;
+      border-color: $color-gray;
+      color: $color-gray;
+      background-color: transparent;
+
+      svg {
+        fill: $color-gray;
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+export * from "./user.resolver"
+export * from "./product.resolver"
+export * from "./categories.resolver"
+export * from "./size.resolver"
+export * from "./color.resolver"
+export * from "./asset.resolver"

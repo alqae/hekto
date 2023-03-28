@@ -1,0 +1,39 @@
+@import "../../styles/init";
+
+.carousel {
+  &__thumbnails {
+    display: flex;
+    justify-content: center;
+
+    & > * {
+      cursor: pointer;
+    }
+  }
+
+  &__slides {
+    overflow: hidden;
+  }
+
+  &__controls {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+
+    .dot {
+      height: 5px;
+      width: 18px;
+      border-radius: 3px;
+      background-color: map-get($theme-colors, primary);
+      transition-property: width;
+      transition-duration: 300ms;
+      transition-timing-function: ease-in-out;
+      cursor: pointer;
+      opacity: 0.5;
+
+      &.current {
+        width: 27px;
+        opacity: 1;
+      }
+    }
+  }
+}

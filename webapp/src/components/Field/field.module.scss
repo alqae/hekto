@@ -1,0 +1,98 @@
+@import "../../styles/init";
+
+.field {
+  position: relative;
+
+  .inputWrapper {
+    padding: 11px 13px;
+    border: 1px solid $color-sub-text;
+    position: relative;
+    background-color: #FFFFFF;
+    line-height: 0;
+
+    input, textarea {
+      background-color: transparent;
+      box-shadow: none;
+      outline: none;
+      border: none;
+      width: 100%;
+      padding: 0;
+      @include font(body, md, $color-sub-text);
+      border-radius: 3px;
+    }
+
+    .suffixIcon, .preffixIcon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    svg {
+      fill: $color-sub-text;
+      font-size: 25px;
+    }
+
+    .suffixIcon {
+      right: 13px;
+    }
+
+    .preffixIcon {
+      left: 13px;
+    }
+
+    &:has(.suffixIcon) {
+      padding-right: 50px;
+    }
+
+    &:has(.preffixIcon) {
+      padding-left: 50px;
+    }
+  }
+
+  &.textarea svg {
+    top: 11px;
+    transform: none;
+  }
+
+  label, input::placeholder, textarea::placeholder {
+    @include font(body, md, $color-sub-text);
+    font-weight: 600;
+  }
+
+  .errorMessage {
+    visibility: hidden;
+  }
+
+  &.error {
+
+    label {
+      color: map-get($theme-colors, danger);
+    }
+
+    .inputWrapper {
+      border-color: map-get($theme-colors, danger);
+
+      input, textarea {
+
+        &, &::placeholder {
+          color: map-get($theme-colors, danger);
+        }
+      }
+
+      svg {
+        fill: map-get($theme-colors, danger);
+      }
+
+      .errorMessage {
+        position: absolute;
+        bottom: -30px;
+        visibility: visible;
+        @include font(body, md, map-get($theme-colors, danger));
+      }
+    }
+
+    &:has(.errorMessage) {
+      margin-bottom: 30px;
+    }
+  }
+}

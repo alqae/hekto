@@ -1,0 +1,52 @@
+@import "../../styles/init";
+
+.Counter {
+  display: flex;
+  align-items: center;
+  height: 40px;
+
+  input {
+    width: 50px;
+    padding: 6px 8px;
+    height: 40px;
+    text-align: center;
+    border-radius: 0;
+    outline: none;
+    border: none;
+    @include font(body, md, map-get($theme-colors, secondary));
+    border: 1px solid map-get($theme-colors, secondary);
+    box-sizing: border-box;
+  }
+
+  button {
+    height: 40px;
+    border: 1px solid map-get($theme-colors, secondary);
+    background-color: map-get($theme-colors, secondary);
+    transition-property: background-color, border-color, color;
+    transition-timing-function: ease;
+    transition-duration: 250ms;
+    color: #FFFFFF;
+    height: 100%;
+    width: 50px;
+
+    &:first-child {
+      border-right: none;
+    }
+
+    &:last-child {
+      border-left: none;
+    }
+
+    &:disabled {
+      background-color: $color-gray;
+      border-color: $color-gray;
+      cursor: not-allowed;
+    }
+    
+    &:hover {
+      background-color: map-get($theme-colors, secondary);
+      color: $color-white !important;
+      cursor: pointer;
+    }
+  }
+}

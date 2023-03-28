@@ -1,0 +1,58 @@
+@import "../../styles/init";
+
+.paragraph {
+  @include font(body, md);
+
+  &,
+  * {
+    text-decoration: none;
+  }
+}
+
+.size {
+//   &-xl {
+//     @include font(body, xl);
+//   }
+
+//   &-lg {
+//     @include font(body, lg);
+//   }
+
+  &-md {
+    @include font(body, md);
+  }
+
+//   &-sm {
+//     @include font(body, sm);
+//   }
+
+//   &-extra-xl {
+//     @include font(extra, noMatch);
+//   }
+}
+
+.color {
+  &-primary {
+    color: map-get($theme-colors, primary);
+  }
+
+  &-secondary {
+    color: map-get($theme-colors, secondary);
+  }
+
+  &-black {
+    color: $color-black;
+  }
+
+  &-white {
+    color: $color-white;
+  }
+
+  &-gray {
+    color: $color-gray;
+  }
+
+  &-sub {
+    color: $color-sub-text;
+  }
+}

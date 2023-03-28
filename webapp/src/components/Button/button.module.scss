@@ -1,0 +1,42 @@
+@import "../../styles/init";
+
+.button {
+  border: 2px solid map-get($theme-colors, primary);
+  transition-property: background-color;
+  transition-duration: 400ms;
+  width: auto;
+  transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  box-shadow: none;
+  outline: none;
+  @include font(body, md, $color-white);
+  $font-family-secondary: $font-family-primary;
+  background-color: map-get($theme-colors, primary);
+
+  &:hover {
+    cursor: pointer;
+    background-color: transparent;
+    color: map-get($theme-colors, primary);
+  }
+}
+
+.transparent {
+  background-color: transparent;
+  color: $color-white;
+}
+
+.large {
+  padding: 9px 41px;
+}
+
+.soft {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.rounded {
+  border-radius: 3px;
+}
+
+.fullWidth {
+  width: 100%;
+}

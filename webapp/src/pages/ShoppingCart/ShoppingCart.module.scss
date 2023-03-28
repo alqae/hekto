@@ -1,0 +1,32 @@
+@import "../../styles/init";
+
+.Panel {
+  background: #F4F4FC;
+  border-radius: 3px;
+  padding: 30px;
+  text-align: start;
+}
+
+.productRow {
+  td {
+    border-bottom: 1px solid $color-gray;
+  }
+  img {
+    max-width: 100%;
+    max-height: 87px;
+  }
+}
+
+.Row {
+  border-bottom: 2px solid #E8E6F1;
+}
+
+.shoppingStatus {
+  svg {
+    fill: map-get($theme-colors, danger);
+  }
+
+  &.aviable svg {
+    fill: map-get($theme-colors, success);
+  }
+}

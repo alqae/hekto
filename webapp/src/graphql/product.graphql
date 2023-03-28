@@ -1,0 +1,50 @@
+query FindProductById($productId: Float!) {
+  product(id: $productId) {
+    id
+    name
+    description
+    price
+    quantity
+    categories {
+      id
+      name
+    }
+    sizes {
+      id
+      value
+    }
+    colors {
+      id
+      value
+    }
+    assets {
+      id
+      description
+      path
+      size
+    }
+    reviews {
+      id
+      content
+      rating
+      user {
+        fullName
+      }
+    }
+    rating
+    user {
+      id
+      firstName
+      lastName
+      email
+    }
+  }
+}
+
+query FindProductNameById($id: Float!) {
+  product(
+    id: $id
+  ) {
+    name
+  }
+}

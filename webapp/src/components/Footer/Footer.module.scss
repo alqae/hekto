@@ -1,0 +1,100 @@
+// Import all the styles from the init file
+@import "../../styles/init";
+
+footer:has(.footer) {
+  a, svg {
+    transition-property: color;
+    transition-duration: 300ms;
+    transition-timing-function: ease-out;
+  }
+}
+
+.footer {
+  background-color: $color-footer-bg;
+  padding-top: 100px;
+  padding-bottom: 100px;
+
+  &__menu {
+    h5 {
+      @include font(headings, xs, $color-black);
+    }
+
+    a {
+      display: block;
+      @include font(navbar, menu, $color-sub-text);
+      margin-bottom: 21px;
+      width: auto;
+      text-decoration: none;
+      position: relative;
+
+      &:hover {
+        color: $color-dark-gray;
+      }
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .subscribe {
+    height: 44px;
+    width: 377px;
+    display: flex;
+
+    &__field {
+      background: #FFFFFF;
+      border-top-left-radius: 3px;
+      border-bottom-left-radius: 3px;
+      opacity: 0.45;
+      flex: 1;
+
+      input[type="email"] {
+        border: none;
+        outline: none;
+        background-color: transparent;
+        padding: 14px 20px;
+        width: 100%;
+        @include font(navbar, menu, $color-off-blue);
+      }
+    }
+
+    div:has(button) {
+      padding: 3px;
+      background-color: rgba(255, 255, 255, 0.45);
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
+
+    button {
+      background-color: map-get($theme-colors, primary);
+      color: $color-white;
+      outline: none;
+      border: none;
+      width: 135px;
+      left: 549px;
+      top: 167px;
+      border-radius: 3px;
+      height: 100%;
+      @include font(navbar, menu, $color-white);
+      font-family: $font-family-secondary;
+      font-weight: 500;
+    }
+  }
+}
+
+.copyright {
+  background-color: $color-copyright-bg;
+
+  span, svg {
+    @include font(navbar, menu, $color-gray);
+  }
+
+  svg {
+    font-size: 20px;
+
+    &:hover {
+      color: $color-dark-gray;
+    }
+  }
+}

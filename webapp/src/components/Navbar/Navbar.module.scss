@@ -1,0 +1,109 @@
+// Import all the styles from the init file
+@import "../../styles/init";
+
+header a {
+  transition-property: color;
+
+  &::after {
+    content: '';
+    position: absolute;
+    height: 3px;
+    bottom: -5px;
+    right: 100%;
+    left: 0;
+    background-color: map-get($theme-colors, primary);
+    transition-property: right;
+  }
+
+  &, &::after {
+    transition-duration: 300ms;
+    transition-timing-function: ease-out;
+  }
+
+  &:hover,
+  &.active {
+    color: map-get($theme-colors, primary);
+
+    &::after {
+      right: 0;
+    }
+  }
+}
+
+.preferences {
+  background-color: $color-purple;
+  color: $color-white;
+
+  span, a {
+    @include font(navbar, prefrences, $color-white);
+    text-decoration: none;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  a, span:has(svg) {
+    cursor: pointer;
+  } 
+
+  a:has(svg), span:has(svg) {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.navbar {
+  padding-bottom: 22px;
+  padding-top: 22px;
+  
+  &__links {
+
+    span, a {
+      @include font(navbar, menu, $color-off-blue);
+      text-decoration: none;
+    }
+
+    a {
+      position: relative;
+      height: 100%;
+    }
+  }
+
+  &__search {
+    height: 40px;
+    display: flex;
+    align-items: center;
+
+    input {
+      width: 266px;
+      border: 2px solid $color-light-gray;
+      border-right: none;
+      padding: 10px;
+      height: 100%;
+      @include font(navbar, menu, $color-off-blue);
+      outline: none;
+    }
+    
+    button {
+      background-color: map-get($theme-colors, primary);
+      color: $color-white;
+      outline: none;
+      border: none;
+      width: 51px;
+      height: 100%;
+      position: relative;
+
+      svg {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+}

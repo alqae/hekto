@@ -1,0 +1,7 @@
+// Import all the styles from the init file
+@import "../../styles/init";
+
+.Logo {
+  display: inline-block;
+  @include font(extras, logo, $color-off-blue);
+}

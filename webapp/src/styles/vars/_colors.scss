@@ -1,0 +1,50 @@
+// Adjust or add Colors:
+$states: (
+  info: #2F80ED,
+  success: #27AE60,
+  warning: #E2B93B,
+  error: #EB5757,
+) !default;
+
+// Example usage:
+$color-white: #F1F1F1;
+$color-black: #0B0D17;
+$color-clear: transparent;
+$color-beige: #FAF7F2;
+$color-light-gray: #E7E6EF;
+$color-gray: #9DA0AE;
+$color-dark-gray: #383B4B;
+
+$color-pink: #FB2E86;
+$color-red: #FB2448;
+$color-blue: #2F1AC4;
+$color-off-navy-blue: #3F509E;
+$color-navy-blue: #151875; // same as off-blue
+$color-off-blue: #0D0E43; // same as navy blue
+$color-breadcrumsb-title: #101750;
+$color-sky-blue: linear-gradient(121.53deg, #F3F9FF 0%, #F1F0FF 100%);
+$color-pantone-purple: #E0D3F5;
+$color-copyright-bg: #E7E4F8;
+$color-footer-bg: #EEEFFB;
+$color-purple: #7E33E0;
+$color-off-purple: #9F63B5;
+$color-breadcrumsb-bg: #F6F5FF;
+$color-faq-bg: #F8F8FD;
+$color-sub-text: #8A8FB9;
+$color-orange: #FFB265;
+$color-green: #1BE982;
+$color-about-bg: #FBFBFF;
+$color-product-bg: #F9F8FE;
+
+// Map to Bootstrap colors:
+$theme-colors: (
+  primary:   $color-pink,
+  secondary: $color-navy-blue,
+  tertiary:  $color-off-navy-blue,
+  success:   map-get($states, success),
+  info:      map-get($states, info),
+  warning:   map-get($states, warning),
+  danger:    map-get($states, error),
+  light:     $color-white,
+  dark:      $color-black,
+);

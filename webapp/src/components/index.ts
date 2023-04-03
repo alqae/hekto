@@ -29,3 +29,4 @@ export * from './Loader'
 export { Carousel } from './Carousel'
 export {Tabs} from './Tabs';
 export {Counter} from './Counter';
+export {Pagination} from './Pagination';

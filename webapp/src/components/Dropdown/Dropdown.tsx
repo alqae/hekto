@@ -4,7 +4,7 @@ import Select, { OptionsOrGroups } from 'react-select'
 
 import { Paragraph } from '../Paragraph'
 
-interface DropdownProps {
+export interface DropdownProps {
   options: {
     value: string | number,
     label: string,
@@ -20,6 +20,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, options, onChange, defaultVa
     closeMenuOnSelect={false}
     placeholder={<Paragraph as="label">{label}</Paragraph>}
     // defaultInputValue={defaultInputValue}
+    isDisabled={options.length <= 1}
     defaultValue={defaultValue}
     classNames={{
       control: () => styles.control,

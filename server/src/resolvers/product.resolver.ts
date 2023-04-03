@@ -2,6 +2,7 @@ import { Arg, Ctx, Field, InputType, Mutation, Query, Resolver } from "type-grap
 
 import { Product, User } from "../entity"
 import { MyContext } from "../types/MyContext"
+import { Between, FindOptionsWhere, ILike, In } from "typeorm"
 
 @InputType()
 export class ProductInput {
@@ -18,15 +19,33 @@ export class ProductInput {
 export class ProductResolver {
   @Query(() => [Product])
   async search(
+    @Arg("categories", () => [Number], { defaultValue: [], validate: false }) categories?: number[],
+    @Arg("colors", () => [Number], { defaultValue: [], validate: false }) colors?: number[],
     @Arg("limit", { defaultValue: 100, nullable: true }) limit?: number,
-    // @Arg("name", { nullable: true }) name?: string,
-    // @Arg("minPrice", { nullable: true }) minPrice?: number,
-    // @Arg("maxPrice", { nullable: true }) maxPrice?: number,
-    // @Arg("items", () => [String]) items: String[]
-    // @Arg("tags", () => [String], { nullable: true }) tags?: String[],
-    // @Arg("categories", () => [String], { nullable: true }) categories?: String[],
+    @Arg("minPrice", { nullable: true }) minPrice?: number,
+    @Arg("maxPrice", { nullable: true }) maxPrice?: number,
+    @Arg("name", { nullable: true }) name?: string,
   ): Promise<Product[]> {
+    const where: FindOptionsWhere<Product> = {}
+
+    if (minPrice && maxPrice) {
+      where.price = Between(minPrice, maxPrice)
+    }
+
+    if (categories && !!categories.length) {
+      where.categories = { id: In(categories) }
+    }
+
+    if (colors && !!colors.length) {
+      where.colors = { id: In(colors) }
+    }
+
+    if (name) {
+      where.name = ILike(`%${name}%`)
+    }
+
     return await Product.find({
+      where,
       relations: ['categories', 'colors', 'sizes', 'reviews', 'thumbnail'],
       take: limit,
     })

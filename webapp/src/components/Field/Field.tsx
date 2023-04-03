@@ -17,6 +17,8 @@ interface Props {
   suffixIcon?: React.ReactNode
   preffixIcon?: React.ReactNode
   className?: string
+  showErrorMessage?: boolean
+  showErrorIcon?: boolean
 }
 
 const Field: React.FC<Props> = ({
@@ -29,6 +31,8 @@ const Field: React.FC<Props> = ({
   preffixIcon,
   rules,
   className,
+  showErrorMessage,
+  showErrorIcon,
 }) => {
   switch (type) {
     default: // Text, number
@@ -37,11 +41,11 @@ const Field: React.FC<Props> = ({
           name={name}
           control={control}
           rules={rules}
-          render={({ field: { name, onBlur, onChange, ref, value }, fieldState: { error } }) => {
+          render={({ field: { name, onBlur, onChange, ref, value }, fieldState: { error }, formState: { defaultValues }, }) => {
             const props = {
               placeholder: `${placeholder}${rules?.required ? '*' : ''}`,
               onChange,
-              defaultValue: value,
+              defaultValue: defaultValues ? defaultValues[name] : '',
               onBlur,
               id: name,
               name,
@@ -56,14 +60,22 @@ const Field: React.FC<Props> = ({
                   [styles[type]]: styles[type],
                 }
               )}>
-                {label && <label htmlFor={name}>{label}{rules?.required ? '*' : ''}</label>}
+                {label && (
+                  <label htmlFor={name}>
+                    {label}{rules?.required ? '*' : ''}
+                  </label>
+                )}
 
                 <div className={classNames(styles.inputWrapper, { [className ?? '']: className })}>
                   {suffixIcon && <div className={classNames(styles.suffixIcon)}>{suffixIcon}</div>}
-                  {type === 'textarea' ? <textarea rows={4} {...props} /> : <input {...props} type={type} max={rules?.max?.toString()} />}
+                  {type === 'textarea' ? (
+                    <textarea rows={4} {...props} />
+                  ) : (
+                    <input {...props} type={type} max={rules?.max?.toString()} />
+                  )}
                   {(preffixIcon && !error) && <div className={classNames(styles.preffixIcon)}>{preffixIcon}</div>}
-                  {error && <AiOutlineExclamationCircle className={styles.preffixIcon} />}
-                  {error && <div className={styles.errorMessage}>{error?.message}</div>}
+                  {error && showErrorIcon && <AiOutlineExclamationCircle className={styles.preffixIcon} />}
+                  {error && showErrorMessage && <div className={styles.errorMessage}>{error?.message}</div>}
                 </div>
               </div>
             )
@@ -81,6 +93,8 @@ Field.defaultProps = {
   name: '',
   rules: {},
   suffixIcon: null,
+  showErrorMessage: true,
+  showErrorIcon: true,
 }
 
 export default Field

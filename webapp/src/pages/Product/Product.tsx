@@ -230,7 +230,7 @@ const ProductDetail: React.FC<Props> = () => {
             key={product.id}
             product={product}
             className="col-3"
-            mode="preview"
+            mode="grid"
           />
         ))}
       </section>

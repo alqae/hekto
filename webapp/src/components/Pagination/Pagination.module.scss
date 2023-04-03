@@ -1,0 +1,41 @@
+@import "../../styles/init";
+
+.pagination {
+  li, button.arrow {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  li {
+    list-style: none;
+    text-align: center;
+    opacity: 0.5;
+    @include font(body, lg, map-get($theme-colors, secondary));
+
+    &.active, &:hover {
+      opacity: 1;
+      cursor: pointer;
+    }
+  }
+
+  button.arrow {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+    color: map-get($theme-colors, secondary);
+
+    svg {
+      font-size: 24px;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}

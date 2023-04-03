@@ -48,3 +48,17 @@ query FindProductNameById($id: Float!) {
     name
   }
 }
+
+query FindColors {
+ 	colors {
+    id
+    value
+  }
+}
+
+query FindCategories {
+  categories {
+    id
+    name
+  }
+}

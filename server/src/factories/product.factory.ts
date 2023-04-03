@@ -7,7 +7,7 @@ define(Product, () => {
   const product = new Product()
   product.name = faker.commerce.productName()
   product.description = faker.commerce.productDescription()
-  product.price = faker.commerce.price()
+  product.price = parseFloat(faker.finance.amount())
   product.quantity = faker.datatype.number({ min: 1, max: 150 })
   return product
 })

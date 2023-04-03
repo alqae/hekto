@@ -1,0 +1,50 @@
+@import "../../../../styles/init";
+
+.slider {
+  height: 35px;
+}
+
+.track {
+  background: $color-gray;
+  height: 5px;
+
+  &:nth-child(1) {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    z-index: 1;
+  }
+
+  &:nth-child(2) {
+    background: map-get($theme-colors, secondary);
+    z-index: 2;
+    border-radius: 5px;
+  }
+
+  &:nth-child(3) {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    z-index: 1;
+  }
+}
+
+.thumb {
+  @include font(body, sm, map-get($theme-colors, secondary));
+  display: inline-block;
+  margin-top: 15px;
+  cursor: grab;
+  outline: none;
+
+  &::after {
+    content: " ";
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid red;
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}

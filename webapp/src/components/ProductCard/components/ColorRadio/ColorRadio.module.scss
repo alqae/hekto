@@ -1,0 +1,45 @@
+@import '../../../../styles/init';
+
+.radio {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  position: relative;
+  border-width: 1.5px;
+  border-style: solid;
+
+  input {
+    display: none;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    // visibility: hidden;
+    width: 100%;
+    height: 100%;
+    background-color: map-get($theme-colors, primary);
+    transition-property: background-color;
+    transition-duration: 500ms;
+    transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+
+  &.primary {
+    border-color: map-get($theme-colors, primary);
+  }
+
+  &.secondary {
+    border-color: map-get($theme-colors, secondary);
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.checked {
+  border-color: $color-black !important;
+}

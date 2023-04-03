@@ -17,6 +17,7 @@ import { Asset } from "./Asset"
 import { User } from "./User"
 import { Size } from "./Size"
 import { Review } from "./Review"
+import moment from "moment"
 
 @ObjectType()
 @Entity("products")
@@ -34,8 +35,8 @@ export class Product extends BaseEntity {
   description: string
 
   @Field()
-  @Column("text")
-  price: string
+  @Column("float")
+  price: number
 
   @Field(() => Int)
   @Column("int", { default: 1 })
@@ -43,7 +44,7 @@ export class Product extends BaseEntity {
 
   @Field(() => Asset, { nullable: true })
   @OneToOne(() => Asset, { nullable: true })
-  @JoinColumn()
+  @JoinColumn({ name: "thumbnail_id", referencedColumnName: "id" })
   thumbnail: Asset
 
   @Field(() => [Review], { defaultValue: [], nullable: true })
@@ -97,4 +98,12 @@ export class Product extends BaseEntity {
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.products)
   user: User
+
+  @Field(() => Int)
+  @Column("int", { nullable: true, default: moment().unix() })
+  createdAt: number
+
+  @Field(() => Int)
+  @Column("int", { nullable: true, default: moment().unix() })
+  updatedAt: number
 }

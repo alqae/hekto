@@ -12,7 +12,7 @@ export class RatingSubscriber implements EntitySubscriberInterface<Product> {
   async afterLoad(product: Product): Promise<void> {
     const ratings = product.reviews.map((review) => review.rating);
     const total = ratings.reduce((acc, rating) => acc + rating, 0);
-    product.rating = total / ratings.length;
+    product.rating = parseFloat((total / ratings.length).toFixed(1));
   }
 }
 

@@ -18,24 +18,17 @@ export default class InitialDatabaseSeed implements Seeder {
       .createMany(100)
 
     const assets = await factory(Asset)().createMany(100)
-    const assetsThumbnail = await factory(Asset)().createMany(50)
-    // const assetsMedia = Array.from({ length: 100 }, () => {
-    //   const asset = new Asset()
-    //   asset.path = "https://source.unsplash.com/random"
-    //   asset.description = "Random image"
-    //   asset.size = 100
-    //   return asset
-    // })
 
     await factory(Product)()
       .map(async (product) => {
         product.user = users[Math.floor(Math.random() * users.length)]
-        product.categories = faker.helpers.arrayElements(categories, faker.datatype.number({ min: 3, max: 10 }))
+        product.categories = faker.helpers.arrayElements(categories, faker.datatype.number({ max: 5 }))
         product.colors = faker.helpers.arrayElements(colors, faker.datatype.number({ min: 3, max: 10 }))
         product.sizes = faker.helpers.arrayElements(sizes, faker.datatype.number({ min: 1, max: 4 }))
         product.reviews = faker.helpers.arrayElements(reviews, faker.datatype.number({ min: 1, max: 10 }))
         product.assets = faker.helpers.arrayElements(assets, 4)
-        product.thumbnail = faker.helpers.arrayElement(assetsThumbnail)
+        const thumbnail = await factory(Asset)().create()
+        product.thumbnail = thumbnail
         return product
       })
       .createMany(50)

@@ -128,13 +128,13 @@ const SignUp: React.FC<Props> = () => {
           control={methods.control}
         />
 
-        <Checkbox
+        {/* <Checkbox
           control={methods.control}
           name="termsAndConditions"
           required={true}
           className="mb-2"
           label={<>I agree to these <Link to="/">Terms and Conditions</Link></>}
-        />
+        /> */}
 
         <Link to="/auth/forgot" className="mb-2 text-start">Forgot password?</Link>
         <Button type="submit" className="fw-bold">Sign Up</Button>

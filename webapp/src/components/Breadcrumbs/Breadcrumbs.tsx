@@ -69,7 +69,7 @@ const routes: BreadcrumbsRoute<string>[] = [
 ];
 
 // map & render your breadcrumb components however you want.
-export const Breadcrumbs = () => {
+const Breadcrumbs = () => {
   const breadcrumbs = useBreadcrumbs(routes);
   const lastBreadcrumb = breadcrumbs[breadcrumbs.length - 1];
 
@@ -91,3 +91,5 @@ export const Breadcrumbs = () => {
     </div>
   );
 }
+
+export default Breadcrumbs;

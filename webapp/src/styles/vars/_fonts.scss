@@ -88,6 +88,16 @@ $fonts: (
     ),
   ),
   body: (
+    lg: (
+      family: $font-family-secondary,
+      font-size-mobile: 20px,
+      font-size-desktop: 20px,
+      font-weight: 400,
+      letter-spacing: normal,
+      line-height-mobile: 1.6,
+      line-height-desktop: 1.6,
+      text-transform: false,
+    ),
     md: (
       family: $font-family-secondary,
       font-size-mobile: 16px,
@@ -96,6 +106,16 @@ $fonts: (
       letter-spacing: normal,
       line-height-mobile: 1.6,
       line-height-desktop: 1.6,
+      text-transform: false,
+    ),
+    sm: (
+      family: $font-family-primary,
+      font-size-mobile: 14px,
+      font-size-desktop: 14px,
+      font-weight: 400,
+      letter-spacing: normal,
+      line-height-mobile: 1.5,
+      line-height-desktop: 1.5,
       text-transform: false,
     ),
   ),

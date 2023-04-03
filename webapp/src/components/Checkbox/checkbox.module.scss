@@ -1,56 +1,102 @@
 @import "../../styles/init";
 
-.checkbox {
+.checkboxWrapper {
+  display: block;
+  position: relative;
+
   input[type="checkbox"] {
-    appearance: none;
-    margin: 0;
-    margin-right: 8px;
-
-    &:before {
-      content: unicode("2713");
-      transition-property: background-color;
-      transition-duration: 300ms;
-      transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
-      width: 20px;
-      height: 20px;
-      display: inline-block;
-      border: 1px solid $color-sub-text;
-      font-size: 15px;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: transparent;
-      cursor: pointer;
-    }
-
-    &.checked::before {
-      color: #FFFFFF;
-      background-color: map-get($theme-colors, primary);
-    }
-  }
-
-  label {
-    @include font(body, md, $color-gray);
-    user-select: none;
-    cursor: pointer;
-
-    a {
-      display: inline;
-      color: map-get($theme-colors, primary);
-    }
-  }
-
-  &.error {
-    input[type="checkbox"] {
-      &:before {
-        border-color: map-get($theme-colors, error);
-      }
-    }
-
-    label,
-    a {
-      color: map-get($theme-colors, error);
-    }
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
   }
 }
+
+.checkbox {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border: 1.5px solid $color-black;
+  background-color: #FFFFFF;
+  margin-right: 4px;
+  position: relative;
+  transition-property: border-color, background-color;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+
+  &.checked {
+    border-color: map-get($theme-colors, primary);
+    background-color: map-get($theme-colors, primary);
+
+    svg path {
+      stroke: #FFFFFF;
+    }
+  }
+
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// .checkbox {
+//   input[type="checkbox"] {
+//     appearance: none;
+//     margin: 0;
+//     margin-right: 8px;
+
+//     &:before {
+//       content: unicode("2713");
+//       transition-property: background-color;
+//       transition-duration: 300ms;
+//       transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+//       width: 20px;
+//       height: 20px;
+//       display: inline-block;
+//       border: 1px solid $color-sub-text;
+//       font-size: 15px;
+//       text-align: center;
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       color: transparent;
+//       cursor: pointer;
+//     }
+
+//     &.checked::before {
+//       color: #FFFFFF;
+//       background-color: map-get($theme-colors, primary);
+//     }
+//   }
+
+//   label {
+//     @include font(body, md, $color-gray);
+//     user-select: none;
+//     cursor: pointer;
+
+//     a {
+//       display: inline;
+//       color: map-get($theme-colors, primary);
+//     }
+//   }
+
+//   &.error {
+//     input[type="checkbox"] {
+//       &:before {
+//         border-color: map-get($theme-colors, error);
+//       }
+//     }
+
+//     label,
+//     a {
+//       color: map-get($theme-colors, error);
+//     }
+//   }
+// }

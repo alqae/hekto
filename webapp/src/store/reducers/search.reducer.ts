@@ -21,11 +21,12 @@ export const search = createAsyncThunk<{
   hits: Product[]
   duration: number
 } | undefined, {
-  query?: string
+  name?: string
   maxPrice?: number
   minPrice?: number
-  categories?: string[]
-  tags?: string[]
+  limit?: number
+  colors?: number[]
+  categories?: number[]
 } | undefined>(
   'search/search',
   async (variables, { dispatch }) => {
@@ -41,12 +42,27 @@ export const search = createAsyncThunk<{
         },
         body: JSON.stringify({
           query: `
-            query Search {
-              search(limit: 1000) {
+            query Search(
+              $name: String
+              $maxPrice: Float
+              $minPrice: Float
+              $limit: Float
+              $colors: [Float!]
+              $categories: [Float!]
+            ) {
+              search(
+                name: $name,
+                maxPrice: $maxPrice,
+                minPrice: $minPrice,
+                limit: $limit,
+                colors: $colors,
+                categories: $categories,
+              ) {
                 id
                 name
                 description
                 price
+                rating
                 categories {
                   id
                   name
@@ -71,6 +87,8 @@ export const search = createAsyncThunk<{
                   path
                   size
                 }
+                createdAt
+                updatedAt
               }
             }
           `,

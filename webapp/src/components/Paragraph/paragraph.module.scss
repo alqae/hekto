@@ -14,17 +14,17 @@
 //     @include font(body, xl);
 //   }
 
-//   &-lg {
-//     @include font(body, lg);
-//   }
+  &-lg {
+    @include font(body, lg);
+  }
 
   &-md {
     @include font(body, md);
   }
 
-//   &-sm {
-//     @include font(body, sm);
-//   }
+  &-sm {
+    @include font(body, sm);
+  }
 
 //   &-extra-xl {
 //     @include font(extra, noMatch);
@@ -54,5 +54,17 @@
 
   &-sub {
     color: $color-sub-text;
+  }
+
+  &-danger {
+    color: map-get($theme-colors, danger);
+  }
+
+  &-success {
+    color: map-get($theme-colors, success);
+  }
+
+  &-warning {
+    color: map-get($theme-colors, warning);
   }
 }

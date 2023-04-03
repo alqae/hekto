@@ -33,11 +33,11 @@
     }
 
     .suffixIcon {
-      right: 13px;
+      left: 13px;
     }
 
     .preffixIcon {
-      left: 13px;
+      right: 13px;
     }
 
     &:has(.suffixIcon) {
@@ -64,11 +64,6 @@
   }
 
   &.error {
-
-    label {
-      color: map-get($theme-colors, danger);
-    }
-
     .inputWrapper {
       border-color: map-get($theme-colors, danger);
 

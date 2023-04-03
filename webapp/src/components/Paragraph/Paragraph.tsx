@@ -2,16 +2,17 @@ import React from 'react'
 import classNames from 'classnames'
 import styles from './paragraph.module.scss'
 
-interface Props {
+interface ParagraphProps {
   className?: string
   children?: React.ReactNode
   as?: 'p' | 'span' | 'div' | 'li' | 'label' | 'td'
-  size?: 'md'
-  color?: 'black' | 'primary' | 'secondary' | 'white' | 'gray' | 'sub'
+  size?: 'sm' | 'md' | 'lg'
+  color?: 'black' | 'primary' | 'secondary' | 'white' | 'gray' | 'sub' | 'danger' | 'success' | 'warning'
   onClick?: () => void
+  htmlFor?: string
 }
 
-const Paragraph: React.FC<Props> = ({
+const Paragraph: React.FC<ParagraphProps> = ({
   className,
   children,
   color,

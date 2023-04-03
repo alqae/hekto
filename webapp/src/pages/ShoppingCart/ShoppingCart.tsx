@@ -38,7 +38,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
     {
       id: 1,
       name: 'Subtotal',
-      value: products.reduce((acc, product) => acc + parseInt(product.price) * product.quantity, 0),
+      value: products.reduce((acc, product) => acc + product.price * product.quantity, 0),
     },
     ...(
       isAviableShipping ?
@@ -54,7 +54,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
     {
       id: 3,
       name: 'Total',
-      value: products.reduce((acc, product) => acc + parseInt(product.price) * product.quantity, 0),
+      value: products.reduce((acc, product) => acc + product.price * product.quantity, 0),
     },
   ])
   const { handleSubmit, control } = useForm<ShippingForm>({
@@ -112,8 +112,8 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
                     <td>
                       <Counter
                         min={1}
+                        defaultValue={0}
                         max={product.quantity}
-                        value={0}
                         onChange={(quantity) => dispatch(updateProductQuantity({ id: product.id, quantity }))}
                       />
                     </td>

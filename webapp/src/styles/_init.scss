@@ -11,6 +11,7 @@
 @import "vars/helpers"; // Custom mixins, functions
 @import "vars/colors"; // MC color variables
 // @import "vars/buttons"; // MC button variables
+@import "vars/cards"; // MC button variables
 @import "vars/fonts";
 
 // 3. Import the required bootstrap configuration.
@@ -19,6 +20,9 @@
 @import "~bootstrap/scss/mixins";
 @import "~bootstrap/scss/utilities";
 
+// 4. Include any additional bootstrap components here.
+@import "~react-loading-skeleton/dist/skeleton";
+@import '~react-lazy-load-image-component/src/effects/blur';
 
 // Uncomment to show outer edges of rows.
 // .row {

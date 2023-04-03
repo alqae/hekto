@@ -5,6 +5,6 @@ import { Color } from "../entity"
 
 define(Color, () => {
   const color = new Color()
-  color.value = faker.color.human()
+  color.value = faker.color.rgb({ format: "hex" })
   return color
 })

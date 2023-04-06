@@ -6,12 +6,10 @@ import { Between, FindOptionsWhere, ILike, In } from "typeorm"
 
 @InputType()
 export class ProductInput {
-  @Field(() => String)
-  @Field({ nullable: false })
+  @Field(() => String, { nullable: true })
   name: string
 
-  @Field(() => String)
-  @Field({ nullable: false })
+  @Field(() => String, { nullable: true })
   description: string
 }
 
@@ -25,10 +23,12 @@ export class ProductResolver {
     @Arg("minPrice", { nullable: true }) minPrice?: number,
     @Arg("maxPrice", { nullable: true }) maxPrice?: number,
     @Arg("name", { nullable: true }) name?: string,
-  ): Promise<Product[]> {
+    @Arg("sortKey", { nullable: true }) sortKey?: string,
+    @Arg("sortDirection", { nullable: true }) sortDirection?: string,
+    ): Promise<Product[]> {
     const where: FindOptionsWhere<Product> = {}
 
-    if (minPrice && maxPrice) {
+    if (minPrice != undefined && maxPrice != undefined) {
       where.price = Between(minPrice, maxPrice)
     }
 
@@ -43,9 +43,10 @@ export class ProductResolver {
     if (name) {
       where.name = ILike(`%${name}%`)
     }
-
+    
     return await Product.find({
       where,
+      order: sortDirection && sortKey ? { [sortKey]: sortDirection } : undefined,
       relations: ['categories', 'colors', 'sizes', 'reviews', 'thumbnail'],
       take: limit,
     })

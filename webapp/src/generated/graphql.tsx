@@ -145,11 +145,12 @@ export type Product = {
   thumbnail?: Maybe<Asset>;
   updatedAt: Scalars['Int'];
   user?: Maybe<User>;
+  videoURL: Scalars['String'];
 };
 
 export type ProductInput = {
-  description: Scalars['String'];
-  name: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type Query = {
@@ -196,6 +197,8 @@ export type QuerySearchArgs = {
   maxPrice?: InputMaybe<Scalars['Float']>;
   minPrice?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<Scalars['String']>;
+  sortKey?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -281,12 +284,26 @@ export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type HelloQuery = { __typename?: 'Query', hello: string };
 
+export type SearchQueryVariables = Exact<{
+  name?: InputMaybe<Scalars['String']>;
+  maxPrice?: InputMaybe<Scalars['Float']>;
+  minPrice?: InputMaybe<Scalars['Float']>;
+  limit?: InputMaybe<Scalars['Float']>;
+  colors?: InputMaybe<Array<Scalars['Float']> | Scalars['Float']>;
+  categories?: InputMaybe<Array<Scalars['Float']> | Scalars['Float']>;
+  sortKey?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type SearchQuery = { __typename?: 'Query', search: Array<{ __typename?: 'Product', id: number, name: string, description: string, price: number, rating?: number | null, videoURL: string, quantity: number, createdAt: number, updatedAt: number, categories?: Array<{ __typename?: 'Category', id: number, name: string }> | null, sizes?: Array<{ __typename?: 'Size', id: number, value: string }> | null, colors?: Array<{ __typename?: 'Color', id: number, value: string }> | null, thumbnail?: { __typename?: 'Asset', id: number, description: string, path: string, size: number } | null }> };
+
 export type FindProductByIdQueryVariables = Exact<{
   productId: Scalars['Float'];
 }>;
 
 
-export type FindProductByIdQuery = { __typename?: 'Query', product: { __typename?: 'Product', id: number, name: string, description: string, price: number, quantity: number, rating?: number | null, categories?: Array<{ __typename?: 'Category', id: number, name: string }> | null, sizes?: Array<{ __typename?: 'Size', id: number, value: string }> | null, colors?: Array<{ __typename?: 'Color', id: number, value: string }> | null, assets?: Array<{ __typename?: 'Asset', id: number, description: string, path: string, size: number }> | null, reviews?: Array<{ __typename?: 'Review', id: number, content: string, rating: number, user?: { __typename?: 'User', fullName: string } | null }> | null, user?: { __typename?: 'User', id: number, firstName: string, lastName: string, email: string } | null } };
+export type FindProductByIdQuery = { __typename?: 'Query', product: { __typename?: 'Product', id: number, name: string, description: string, price: number, quantity: number, videoURL: string, rating?: number | null, categories?: Array<{ __typename?: 'Category', id: number, name: string }> | null, sizes?: Array<{ __typename?: 'Size', id: number, value: string }> | null, colors?: Array<{ __typename?: 'Color', id: number, value: string }> | null, assets?: Array<{ __typename?: 'Asset', id: number, description: string, path: string, size: number }> | null, reviews?: Array<{ __typename?: 'Review', id: number, content: string, rating: number, user?: { __typename?: 'User', fullName: string } | null }> | null, user?: { __typename?: 'User', id: number, firstName: string, lastName: string, email: string } | null } };
 
 export type FindProductNameByIdQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -507,6 +524,83 @@ export function useHelloLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Hell
 export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = Apollo.QueryResult<HelloQuery, HelloQueryVariables>;
+export const SearchDocument = gql`
+    query Search($name: String, $maxPrice: Float, $minPrice: Float, $limit: Float, $colors: [Float!], $categories: [Float!], $sortKey: String, $sortDirection: String) {
+  search(
+    name: $name
+    maxPrice: $maxPrice
+    minPrice: $minPrice
+    limit: $limit
+    colors: $colors
+    categories: $categories
+    sortKey: $sortKey
+    sortDirection: $sortDirection
+  ) {
+    id
+    name
+    description
+    price
+    rating
+    videoURL
+    categories {
+      id
+      name
+    }
+    sizes {
+      id
+      value
+    }
+    colors {
+      id
+      value
+    }
+    thumbnail {
+      id
+      description
+      path
+      size
+    }
+    quantity
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useSearchQuery__
+ *
+ * To run a query within a React component, call `useSearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *      maxPrice: // value for 'maxPrice'
+ *      minPrice: // value for 'minPrice'
+ *      limit: // value for 'limit'
+ *      colors: // value for 'colors'
+ *      categories: // value for 'categories'
+ *      sortKey: // value for 'sortKey'
+ *      sortDirection: // value for 'sortDirection'
+ *   },
+ * });
+ */
+export function useSearchQuery(baseOptions?: Apollo.QueryHookOptions<SearchQuery, SearchQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchQuery, SearchQueryVariables>(SearchDocument, options);
+      }
+export function useSearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchQuery, SearchQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchQuery, SearchQueryVariables>(SearchDocument, options);
+        }
+export type SearchQueryHookResult = ReturnType<typeof useSearchQuery>;
+export type SearchLazyQueryHookResult = ReturnType<typeof useSearchLazyQuery>;
+export type SearchQueryResult = Apollo.QueryResult<SearchQuery, SearchQueryVariables>;
 export const FindProductByIdDocument = gql`
     query FindProductById($productId: Float!) {
   product(id: $productId) {
@@ -515,6 +609,7 @@ export const FindProductByIdDocument = gql`
     description
     price
     quantity
+    videoURL
     categories {
       id
       name

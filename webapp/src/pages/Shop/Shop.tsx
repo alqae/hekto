@@ -11,6 +11,7 @@ import { AppDispatch, RootState } from '../../store'
 import { Product } from '../../generated/graphql'
 import { search } from '../../store/reducers'
 import {
+  Button,
   Dropdown,
   Heading,
   Pagination,
@@ -23,6 +24,7 @@ import {
   FilterPrice,
   FilterRating,
 } from './components'
+import { faker } from '@faker-js/faker'
 
 export interface SearchProps { }
 
@@ -37,10 +39,26 @@ export interface SearchForm {
 }
 
 const sortOptions = [
-  { value: '1', label: 'Newest' },
-  { value: '2', label: 'Oldest' },
-  { value: '3', label: 'Price: Low to High' },
-  { value: '4', label: 'Price: High to Low' },
+  {
+    value: '1',
+    label: 'Newest',
+    metadata: { sortKey: 'createdAt', sortDirection: 'DESC' }
+  },
+  {
+    value: '2',
+    label: 'Oldest',
+    metadata: { sortKey: 'createdAt', sortDirection: 'ASC' }
+  },
+  {
+    value: '3',
+    label: 'Price: Low to High',
+    metadata: { sortKey: 'price', sortDirection: 'ASC' }
+  },
+  {
+    value: '4',
+    label: 'Price: High to Low',
+    metadata: { sortKey: 'price', sortDirection: 'DESC' }
+  },
 ]
 
 const transition: AnimationProps['transition'] = { duration: 0.5, ease: 'easeOut' };
@@ -64,21 +82,34 @@ const Shop: React.FC<SearchProps> = () => {
   const [perPage, setPerPage] = React.useState(20)
   /// Search
   const hits = useSelector<RootState, Product[]>((state) => state.search.hits || [])
-  const [filteredHits, setFilteredHits] = React.useState<Product[]>(hits)
   const isLoading = useSelector<RootState, boolean>((state) => state.search.loading)
 
-  React.useEffect(() => {
-    if (!!perPage && !!filteredHits.length) {
-      calculatePagination(currentPage)
+  const methods = useForm<SearchForm>({
+    defaultValues: {
+      minPrice: 0,
+      maxPrice: majorPrice,
+      categories: [],
+      colors: [],
+      rating: [],
+      perPage: perPage.toString(),
+      sort: '1',
     }
-  }, [currentPage, filteredHits, perPage])
+  })
+
+  React.useEffect(() => {
+    if (!!perPage && !!hits.length) {
+      const isOutOfBound = currentPage * perPage > hits.length
+      const nextCurrentPage = isOutOfBound ? 0 : currentPage
+      calculatePagination(nextCurrentPage)
+      handlePageClick(nextCurrentPage)
+    }
+  }, [currentPage, hits, perPage])
 
   React.useEffect(() => {
     dispatch(search())
   }, [dispatch])
 
   React.useEffect(() => {
-    setFilteredHits(hits)
     const nextMajorValue = Math.max(...hits.map((item) => item.price))
     const nextMinorValue = Math.min(...hits.map((item) => item.price))
 
@@ -93,9 +124,29 @@ const Shop: React.FC<SearchProps> = () => {
     }
   }, [hits])
 
+  const categories = methods.watch('categories', [])
+  const colors = methods.watch('colors', [])
+  const minPrice = methods.watch('minPrice', 0)
+  const maxPrice = methods.watch('maxPrice', 1)
+  const sort = methods.watch('sort', '1')
+
+  React.useEffect(() => {
+    const { metadata } = sortOptions.find((item) => item.value === sort) ?? {}
+
+    dispatch(search({
+      categories: categories.map((category) => parseInt(category)),
+      colors: colors.map((color) => parseInt(color)),
+      minPrice,
+      maxPrice,
+      sortKey: metadata?.sortKey,
+      sortDirection: metadata?.sortDirection,
+    }))
+  }, [categories, colors, minPrice, maxPrice, sort])
+
+
   const calculatePagination = (page: number): void => {
     const offset = page * perPage
-    const currentPageData = filteredHits.slice(offset, offset + perPage)
+    const currentPageData = hits.slice(offset, offset + perPage)
     setCurrentPageData(currentPageData)
   }
 
@@ -104,18 +155,6 @@ const Shop: React.FC<SearchProps> = () => {
     const min = Math.floor((ms / 1000 / 60) << 0)
     const sec = ((ms % 60000) / 1000).toFixed(1)
     return `${min > 0 ? `${min} minutes` : ``}${sec} seconds`
-  })
-  
-  const methods = useForm<SearchForm>({
-    defaultValues: {
-      minPrice: 0,
-      maxPrice: majorPrice,
-      categories: [],
-      colors: [],
-      rating: [],
-      perPage: perPage.toString(),
-      sort: '1',
-    }
   })
 
   const handlePageClick = (selected: number) => {
@@ -128,95 +167,34 @@ const Shop: React.FC<SearchProps> = () => {
   }
 
   const onSubmit = (data: SearchForm) => {
-    console.log(data)
+    const { metadata } = sortOptions.find((item) => item.value === data.sort) ?? {}
+
+    dispatch(search({
+      categories: data.categories.map((category) => parseInt(category)),
+      colors: data.colors.map((color) => parseInt(color)),
+      minPrice: data.minPrice,
+      maxPrice: data.maxPrice,
+      sortKey: metadata?.sortKey,
+      sortDirection: metadata?.sortDirection,
+    }))
   }
 
   const perPageOptions = Array
     .from({ length: 20 }, (_, i) => i + 1)
-    .filter((item) => item * 5 <= filteredHits.length)
+    .filter((item) => item * 5 <= hits.length)
     .map((item) => ({ value: (item * 5).toString(), label: (item * 5).toString() }))
 
-  // const rating = methods.watch('rating') ?? []
-  const categories = methods.watch('categories') ?? []
-  const colors = methods.watch('colors') ?? []
-  const minPrice = methods.watch('minPrice') ?? 0
-  const maxPrice = methods.watch('maxPrice') ?? 1
-  const sort = methods.watch('sort') ?? '1'
-
-  // TODO: Refactor this
-  React.useEffect(() => {
-    let hitsToUpdate = [...hits]
-    
-  //   if (!!rating.length) {
-  //     const value = rating.map((item) => parseInt(item))
-  //     const filteredByRating = hitsToUpdate.filter((hit) => value.includes(Math.round(hit.rating ?? 0)))
-  //     hitsToUpdate = filteredByRating
-  //   } else {
-  //     hitsToUpdate = hits
-  //   }
-
-    // if (sort === '1') {
-    //   hitsToUpdate = hitsToUpdate.sort((a, b) => a.createdAt - b.createdAt)
-    // } else if (sort === '2') {
-    //   hitsToUpdate = hitsToUpdate.sort((a, b) => b.createdAt - a.createdAt)
-    // } else 
-    if (sort === '3') {
-      hitsToUpdate = hitsToUpdate.sort((a, b) => a.price - b.price)
-    } else if (sort === '4') {
-      hitsToUpdate = hitsToUpdate.sort((a, b) => b.price - a.price)
-    }
-    setFilteredHits(hitsToUpdate)
-    // calculatePagination(currentPage)
-  }, [sort])
-
-  React.useEffect(() => {
-    console.warn('searching...');
-    
-    dispatch(search({
-      categories: categories.map((category) => parseInt(category)),
-      colors: colors.map((color) => parseInt(color)),
-      minPrice,
-      maxPrice,
-    }))
-    
-    // if (!!categories.length) {
-    //   const categoriesSelected = categories.map((item) => parseInt(item))
-    //   const filteredByCategory = hitsToUpdate.filter((hit) => {
-    //     const hitCategories = hit.categories?.map((category) => category.id) ?? []
-    //     return categoriesSelected.map((categorySelected) => hitCategories.includes(categorySelected)).every((item) => item)
-    //   })
-    //   hitsToUpdate = filteredByCategory
-    // }
-
-    // if (!!colors.length) {
-    //   const colorsSelected = colors.map((item) => parseInt(item))
-    //   const filteredByColor = hitsToUpdate.filter((hit) => {
-    //     const hitColors = hit.colors?.map((color) => color.id) ?? []
-    //     return colorsSelected.map((colorSelected) => hitColors.includes(colorSelected)).every((item) => item)
-    //   })
-    //   hitsToUpdate = filteredByColor
-    // }
-    
-    // if (!rating.length && !categories.length && !colors.length) {
-    //   hitsToUpdate = hits
-    // }
-
-    // const filteredByPrice = hitsToUpdate.filter((item) => {
-    //   const price = parseFloat(item.price)
-    //   return price >= minPrice && price <= maxPrice
-    // })
-    // hitsToUpdate = filteredByPrice
-
-    // if (sort === '1') {
-    //   hitsToUpdate = hitsToUpdate.sort((a, b) => a.createdAt - b.createdAt)
-    // } else if (sort === '2') {
-    //   hitsToUpdate = hitsToUpdate.sort((a, b) => b.createdAt - a.createdAt)
-    // } else if (sort === '3') {
-    //   hitsToUpdate = hitsToUpdate.sort((a, b) => parseFloat(a.price) - parseFloat(b.price))
-    // } else if (sort === '4') {
-    //   hitsToUpdate = hitsToUpdate.sort((a, b) => parseFloat(b.price) - parseFloat(a.price))
-    // }
-  }, [categories, colors, minPrice, maxPrice])
+  const clearFilters = () => {
+    methods.reset({
+      minPrice: minorPrice,
+      maxPrice: majorPrice,
+      categories: [],
+      colors: [],
+      rating: [],
+      perPage: perPage.toString(),
+      sort: '1',
+    })
+  }
 
   const skeletonProducts = new Array<Product>(perPage).fill({
     id: 0,
@@ -230,9 +208,10 @@ const Shop: React.FC<SearchProps> = () => {
     colors: [],
     reviews: [],
     sizes: [],
+    videoURL: '',
     createdAt: 0,
     updatedAt: 0,
-  });
+  })
     
   return (
     <section className="container d-flex flex-wrap mt-0 pt-md-15 pt-8">
@@ -245,8 +224,8 @@ const Shop: React.FC<SearchProps> = () => {
           className="row col-12 align-items-center"
         >
           <div className="col me-auto d-flex flex-column justify-content-center">
-            <Heading level={3} size="sm" className="mb-0">Ecommerce Acceories & Fashion item</Heading>
-            <Paragraph as="span">About {filteredHits.length} results ({duration})</Paragraph>
+            <Heading level={3} size="sm" className="mb-0">Ecommerce Acceories & Fashion</Heading>
+            <Paragraph as="span">About {hits.length} results ({duration})</Paragraph>
           </div>
 
           <div className="col-auto d-flex align-items-center">
@@ -268,6 +247,7 @@ const Shop: React.FC<SearchProps> = () => {
             <Dropdown
               options={sortOptions}
               defaultValue={sortOptions[0]}
+              value={sortOptions.find((item) => item.value === sort)}
               onChange={({ value }) => methods.setValue('sort', value)}
             />
           </div>
@@ -312,6 +292,7 @@ const Shop: React.FC<SearchProps> = () => {
                 max={majorPrice}
               />
               <FilterColor />
+              <Button type="reset" onClick={clearFilters} soft className="mt-2">Clear</Button>
             </motion.form>
           )}
 
@@ -326,17 +307,12 @@ const Shop: React.FC<SearchProps> = () => {
           >
             {
               (isLoading ? skeletonProducts : currentPageData).map((product, index) => (
-                <div className={classNames({
+                <div key={isLoading ? index : product.id} className={classNames({
                   'col-4': isGrid,
                   'col-12': isRow,
                   'mb-4': isRow && (currentPageData.length - 1) != index,
                 })}>
-                  <ProductCard
-                    key={product.id}
-                    isLoading={isLoading}
-                    product={product}
-                    mode={hitsDirection}
-                  />
+                  <ProductCard isLoading={isLoading} product={product} mode={hitsDirection} />
                 </div>
               ))
             }
@@ -347,7 +323,7 @@ const Shop: React.FC<SearchProps> = () => {
           <Pagination
             onPageChange={handlePageClick}
             currentPage={currentPage}
-            total={filteredHits.length}
+            total={hits.length}
             perPage={perPage}
             pagesToShow={5}
           />

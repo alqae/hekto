@@ -9,7 +9,7 @@ import { AiFillHeart, AiOutlineHeart, AiOutlineZoomIn } from 'react-icons/ai'
 import { MdOutlineAddShoppingCart, MdOutlineRemoveShoppingCart } from 'react-icons/md'
 
 import { AppDispatch, RootState } from '../../store'
-import { Product } from '../../generated/graphql'
+import { Color, Product } from '../../generated/graphql'
 import { ButtonIcon } from '../ButtonIcon'
 import { ColorRadio } from './components'
 import { Paragraph } from '../Paragraph'
@@ -29,12 +29,13 @@ export interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, className, mode, isLoading }) => {
-  const [selectedColor, setSelectedColor] = React.useState<string>(product.colors?.at(0)?.value ?? '')
+  const [selectedColor, setSelectedColor] = React.useState<Color | undefined>(product.colors?.at(0))
   const dispatch = useDispatch<AppDispatch>()
 
-  const isProductOnCart = useSelector<RootState, boolean>((state) =>
-    !!state.shared.shoppingCart.find(({ id }) => id === product.id)
-  )
+  const isProductOnCart = false
+  // useSelector<RootState, boolean>((state) =>
+  //   !!state.shared.shoppingCart.find(({ product: { id } }) => id === product.id)
+  // )
   const isProductOnWishlist = useSelector<RootState, boolean>((state) =>
     !!state.shared.whiteList.find(({ id }) => id === product.id)
   )
@@ -51,8 +52,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className, mode, isL
 
   const addToCart = () => dispatch(
     isProductOnCart
-      ? removeProductFromCart(product)
-      : addProductToCart(product)
+      ? removeProductFromCart(product.id)
+      : addProductToCart({ product, quantity: 1, size: product.sizes?.at(0), color: selectedColor })
   )
 
   const isGrid = mode === 'grid'
@@ -149,10 +150,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className, mode, isL
               {product.colors?.slice(0, 5).map((color) => (
                 <ColorRadio
                   key={color.id}
-                  checked={color.value === selectedColor}
+                  checked={color.value === selectedColor?.value}
                   name={`color-${color.id}`}
                   color={color.value}
-                  onChange={() => setSelectedColor(color.value)}
+                  onChange={() => setSelectedColor(color)}
                 />
               ))}
               {totalColors > 5 && <Paragraph color="black">+{totalColors - 5}</Paragraph>}

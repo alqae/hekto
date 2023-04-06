@@ -1,27 +1,17 @@
 import React from 'react'
 import classNames from 'classnames'
-import styles from './Product.module.scss'
+import { Player } from 'video-react'
 import Rating from 'react-star-review'
-import { Player } from 'video-react';
+import { motion } from 'framer-motion'
+import { useDispatch } from 'react-redux'
+import styles from './Product.module.scss'
+// import { FaFacebookF } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { AnimatePresence, motion } from 'framer-motion'
-import { MdAdd, MdFacebook, MdRemove } from 'react-icons/md'
-import {
-  AiFillInstagram,
-  AiFillTwitterCircle,
-  AiFillYoutube,
-  AiOutlineArrowLeft,
-  AiOutlineArrowRight,
-  AiOutlineHeart,
-  AiOutlineShareAlt,
-  AiOutlineShoppingCart,
-  AiOutlineTwitter,
-} from 'react-icons/ai'
+import { AiFillInstagram, AiOutlineTwitter, AiFillFacebook } from 'react-icons/ai'
 
-import { Product, useFindProductByIdQuery } from '../../generated/graphql'
-import { AppDispatch, RootState } from '../../store'
-import { addProductToCart, search } from '../../store/reducers'
+import { Product, useFindProductByIdQuery, useSearchQuery } from '../../generated/graphql'
+import { addProductToCart } from '../../store/reducers'
+import { AppDispatch } from '../../store'
 import {
   Button,
   Carousel,
@@ -33,31 +23,30 @@ import {
   Paragraph,
   ProductCard,
   Tabs,
-  // Tabs,
 } from '../../components'
-import { FaFacebookF } from 'react-icons/fa';
 
-interface Props { }
+interface ProductDetailProps { }
 
-const ProductDetail: React.FC<Props> = () => {
+const ProductDetail: React.FC<ProductDetailProps> = () => {
   const { id } = useParams() as { id: string }
   const [alreadyDispatched, setAlreadyDispatched] = React.useState(false)
   const [activeImage, setActiveImage] = React.useState(0)
   const [quantity, setQuantity] = React.useState(1)
   const dispatch = useDispatch<AppDispatch>()
-  const similarProducts = useSelector<RootState, Product[]>((state) => state.search.hits.slice(0, 4))
   const { data, loading } = useFindProductByIdQuery({
     variables: {
       productId: parseInt(id),
     }
   })
 
-  React.useEffect(() => {
-    if (!similarProducts.length && !alreadyDispatched) {
-      // dispatch(search())
-      setAlreadyDispatched(true)
+  const SIMILAR_PRODUCTS_LIMIT = 4
+
+  const { data: similarProducts, loading: similarProductsLoading } = useSearchQuery({
+    variables: {
+      categories: data?.product.categories?.map((category) => category.id),
+      limit: SIMILAR_PRODUCTS_LIMIT,
     }
-  }, [])
+  })
 
   if (loading) {
     return <Loader />
@@ -85,7 +74,7 @@ const ProductDetail: React.FC<Props> = () => {
                   whileTap={{ scale: 0.9 }}
                   onClick={() => {
                     setActiveImage(index)
-                
+
                     const el = document.getElementById('layout')
                     if (el) {
                       el.scrollIntoView({ behavior: 'smooth' })
@@ -128,7 +117,7 @@ const ProductDetail: React.FC<Props> = () => {
             <Counter
               defaultValue={1}
               onChange={(value) => {
-                console.warn('value', value);
+                console.warn('value', value)
                 setQuantity(value)
               }}
               min={1}
@@ -136,7 +125,12 @@ const ProductDetail: React.FC<Props> = () => {
             />
             <Button
               fullWidth={false}
-              // onClick={() => addProductToCart(data.product)}
+              onClick={() => dispatch(addProductToCart({
+                quantity,
+                color: data.product.colors?.at(0),
+                size: data.product.sizes?.at(0),
+                product: data.product as Product,
+              }))}
               className="ms-2"
             >
               Add to cart
@@ -166,7 +160,7 @@ const ProductDetail: React.FC<Props> = () => {
             <Paragraph size="md" color="secondary" className="m-0">Share:</Paragraph>
             <div className="d-flex gap-2">
               <Link to="http://facebook.com/" target="_blank">
-                <FaFacebookF />
+                <AiFillFacebook />
               </Link>
 
               <Link to="http://instragram.com/" target="_blank">
@@ -188,33 +182,35 @@ const ProductDetail: React.FC<Props> = () => {
             tabs={[
               {
                 title: 'Description',
-                content: <div dangerouslySetInnerHTML={{ __html: data.product.description }} />,
+                content: <p dangerouslySetInnerHTML={{ __html: data.product.description }} />,
               },
               {
                 title: 'Reviews',
                 content: (
                   <Carousel
-                    slides={data.product.reviews?.map((review) => ({
-                      id: review.id,
-                      thumbnail: review.user?.fullName,
-                      render: <div className="text-center py-3">{review.content}</div>,
-                    })) || []}
+                    slides={
+                      data.product.reviews?.map((review) => ({
+                        id: review.id,
+                        thumbnail: review.user?.fullName,
+                        render: <p className="text-center py-3">{review.content}</p>,
+                      })) || []
+                    }
                     showThumbnail={false}
                     autoPlay
                   />
                 ),
               },
-              ...(data.product.description
+              ...(data.product.videoURL
                 ? [
-                    {
-                      title: 'Video',
-                      content: (
-                        <Player autoPlay>
-                          <source src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4" />
-                        </Player>
-                      ),
-                    }
-                  ]
+                  {
+                    title: 'Video',
+                    content: (
+                      <Player autoPlay>
+                        <source src={data.product.videoURL} />
+                      </Player>
+                    ),
+                  }
+                ]
                 : []
               )
             ]}
@@ -225,14 +221,19 @@ const ProductDetail: React.FC<Props> = () => {
       <section className={classNames(styles.similarProducts, 'container', 'row', 'mb-10')}>
         <Heading level={3} size="lg" className="mb-5">Related Products</Heading>
 
-        {similarProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            className="col-3"
-            mode="grid"
-          />
-        ))}
+        <div className="row">
+          {(similarProducts?.search ?? [])
+            .map((similarProduct) => (
+              <div className="col-3" key={`product-${similarProduct.id}`}>
+                <ProductCard
+                  isLoading={similarProductsLoading}
+                  product={similarProduct}
+                  mode="grid"
+                />
+              </div>
+            ))
+          }
+        </div>
       </section>
     </React.Fragment>
   )

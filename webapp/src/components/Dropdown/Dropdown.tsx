@@ -11,17 +11,19 @@ export interface DropdownProps {
     isDisabled?: boolean
   }[];
   defaultValue?: DropdownProps['options'][0];
+  value?: DropdownProps['options'][0];
   onChange: (value: { value: string, label: string }) => void
   label?: string
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ label, options, onChange, defaultValue }) => (
+const Dropdown: React.FC<DropdownProps> = ({ label, options, onChange, defaultValue, value }) => (
   <Select
     closeMenuOnSelect={false}
     placeholder={<Paragraph as="label">{label}</Paragraph>}
     // defaultInputValue={defaultInputValue}
     isDisabled={options.length <= 1}
     defaultValue={defaultValue}
+    value={value}
     classNames={{
       control: () => styles.control,
       valueContainer: () => styles.valueContainer,

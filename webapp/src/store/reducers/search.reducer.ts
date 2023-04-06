@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-import { Product } from '../../generated/graphql'
+import { Product, SearchQuery } from '../../generated/graphql'
 
 interface SearchState {
   hits: Product[]
@@ -27,6 +27,8 @@ export const search = createAsyncThunk<{
   limit?: number
   colors?: number[]
   categories?: number[]
+  sortKey?: string
+  sortDirection?: string
 } | undefined>(
   'search/search',
   async (variables, { dispatch }) => {
@@ -49,6 +51,8 @@ export const search = createAsyncThunk<{
               $limit: Float
               $colors: [Float!]
               $categories: [Float!]
+              $sortKey: String
+              $sortDirection: String
             ) {
               search(
                 name: $name,
@@ -57,6 +61,8 @@ export const search = createAsyncThunk<{
                 limit: $limit,
                 colors: $colors,
                 categories: $categories,
+                sortKey: $sortKey,
+                sortDirection: $sortDirection
               ) {
                 id
                 name

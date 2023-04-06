@@ -42,6 +42,10 @@ export class Product extends BaseEntity {
   @Column("int", { default: 1 })
   quantity: number
 
+  @Field(() => String)
+  @Column("text")
+  videoURL: string
+
   @Field(() => Asset, { nullable: true })
   @OneToOne(() => Asset, { nullable: true })
   @JoinColumn({ name: "thumbnail_id", referencedColumnName: "id" })

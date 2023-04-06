@@ -1,11 +1,12 @@
 import React from 'react'
 import * as Yup from 'yup'
+import { useTable } from 'react-table'
 import { useForm } from 'react-hook-form'
 import styles from './ShoppingCart.module.scss'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { clearShoppingCart, updateProductQuantity } from '../../store/reducers'
+import { ShoppingCartProduct, clearShoppingCart, updateProductQuantity } from '../../store/reducers'
 import { Button, Counter, Field, Heading, Paragraph } from '../../components'
 import { AppDispatch, RootState } from '../../store'
 import { Product } from '../../generated/graphql'
@@ -32,13 +33,42 @@ export interface ShoppingCartProps { }
 export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
-  const products = useSelector<RootState, Product[]>((state) => state.shared.shoppingCart)
-  const isAviableShipping =  faker.datatype.boolean()
+  const products = useSelector<RootState, ShoppingCartProduct[]>((state) => state.shared.shoppingCart)
+  const isAviableShipping = faker.datatype.boolean()
+  console.warn('products', products);
+  
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({
+    columns: [
+      {
+        Header: 'Product',
+      },
+      {
+        Header: 'Price',
+      },
+      {
+        Header: 'Size',
+      },
+      {
+        Header: 'Quantity',
+      },
+      {
+        Header: 'Total',
+      },
+    ],
+    data: products ?? [],
+  })
+
   const [totals, setTotals] = React.useState([
     {
       id: 1,
       name: 'Subtotal',
-      value: products.reduce((acc, product) => acc + product.price * product.quantity, 0),
+      value: products.reduce((acc, { quantity, product }) => acc + product.price * quantity, 0),
     },
     ...(
       isAviableShipping ?
@@ -54,7 +84,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
     {
       id: 3,
       name: 'Total',
-      value: products.reduce((acc, product) => acc + product.price * product.quantity, 0),
+      value: products.reduce((acc, { quantity, product }) => acc + product.price * quantity, 0),
     },
   ])
   const { handleSubmit, control } = useForm<ShippingForm>({
@@ -71,13 +101,13 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
   const onCalculateShipping = (data: ShippingForm) => {
     console.log(data)
   }
-  
+
   return (
     <section className="container row">
       <div className="col-8">
-        {products.length ? (
+        {!!products.length ? (
           <>
-            <table>
+            {/* <table>
               <thead>
                 <tr>
                   <td>
@@ -95,7 +125,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
                 </tr>
               </thead>
               <tbody>
-                {products.map((product) => (
+                {products.map(({ product, quantity }) => (
                   <tr className={styles.productRow} key={product.id}>
                     <td className="py-2 col-5">
                       <div className="d-flex align-items-center">
@@ -112,14 +142,37 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
                     <td>
                       <Counter
                         min={1}
-                        defaultValue={0}
                         max={product.quantity}
+                        defaultValue={quantity}
                         onChange={(quantity) => dispatch(updateProductQuantity({ id: product.id, quantity }))}
                       />
                     </td>
                     <Paragraph as="td" color="secondary">£219.00</Paragraph>
                   </tr>
                 ))}
+              </tbody>
+            </table> */}
+            <table {...getTableProps()}>
+              <thead>
+                {headerGroups.map(headerGroup => (
+                  <tr {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroup.headers.map(column => (
+                      <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {rows.map((row, i) => {
+                  prepareRow(row)
+                  return (
+                    <tr {...row.getRowProps()}>
+                      {row.cells.map(cell => {
+                        return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                      })}
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
 

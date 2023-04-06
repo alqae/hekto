@@ -1,3 +1,53 @@
+query Search(
+  $name: String
+  $maxPrice: Float
+  $minPrice: Float
+  $limit: Float
+  $colors: [Float!]
+  $categories: [Float!]
+  $sortKey: String
+  $sortDirection: String
+) {
+  search(
+    name: $name,
+    maxPrice: $maxPrice,
+    minPrice: $minPrice,
+    limit: $limit,
+    colors: $colors,
+    categories: $categories,
+    sortKey: $sortKey,
+    sortDirection: $sortDirection
+  ) {
+    id
+    name
+    description
+    price
+    rating
+    videoURL
+    categories {
+      id
+      name
+    }
+    sizes {
+      id
+      value
+    }
+    colors {
+      id
+      value
+    }
+    thumbnail {
+      id
+      description
+      path
+      size
+    }
+    quantity
+    createdAt
+    updatedAt
+  }
+}
+            
 query FindProductById($productId: Float!) {
   product(id: $productId) {
     id
@@ -5,6 +55,7 @@ query FindProductById($productId: Float!) {
     description
     price
     quantity
+    videoURL
     categories {
       id
       name

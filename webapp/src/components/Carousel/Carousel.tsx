@@ -3,13 +3,7 @@ import classNames from 'classnames'
 import styles from './Carousel.module.scss'
 import { AnimationProps, motion, useDragControls } from 'framer-motion'
 
-import FirstImage from '../../assets/images/clients/first.png'
-import SecondImage from '../../assets/images/clients/second.png'
-import ThirdImage from '../../assets/images/clients/third.png'
-
 import { usePrevious } from '../../hooks'
-import { Paragraph } from '../Paragraph'
-import { Heading } from '../Heading'
 
 const transition: AnimationProps['transition'] = {
   duration: 0.8,

@@ -1,5 +1,4 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
-import { getDefaultMiddleware } from '@reduxjs/toolkit'
 import storage from 'redux-persist/lib/storage'
 import { persistReducer } from 'redux-persist'
 import logger from 'redux-logger'
@@ -15,19 +14,18 @@ const reducer = combineReducers({
   search: searchReducer,
 })
 
-
-// const middleware = [
-//   thunk,
-//   ...(
-//     process.env.NODE_ENV === 'development' ?
-//       [
-//         /* Development middleware */
-//         logger,
-//       ] : [
-//         /* Production middleware */
-//       ]
-//   )
-// ]
+const middleware = [
+  thunk,
+  ...(
+    import.meta.env.NODE_ENV === 'development' ?
+      [
+        /* Development middleware */
+        logger,
+      ] : [
+        /* Production middleware */
+      ]
+  )
+]
 
 const persistConfig = {
   key: 'root',
@@ -39,9 +37,8 @@ const persistedReducer = persistReducer(persistConfig, reducer)
 
 export const store = configureStore({
   reducer: persistedReducer,
-  // middleware,
-  middleware: (gDM) => gDM().concat(logger, thunk),
-  devTools: process.env.NODE_ENV !== 'production',
+  middleware,
+  devTools: import.meta.env.NODE_ENV !== 'production',
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

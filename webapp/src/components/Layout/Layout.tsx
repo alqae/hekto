@@ -23,7 +23,7 @@ const Layout: React.FC<Props> = () => {
   React.useEffect(() => {
     if (token) {
       fetch(
-        `${process.env.GRAPHQL_URL ?? 'http://localhost:4000'}/refresh`,
+        `${import.meta.env.GRAPHQL_URL ?? 'http://localhost:4000'}/refresh`,
         {
           credentials: 'include',
           method: 'POST',

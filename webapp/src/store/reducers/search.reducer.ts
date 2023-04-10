@@ -36,7 +36,7 @@ export const search = createAsyncThunk<{
 
     try {
       const time1 = performance.now()
-      const GRAPHQL_API = process.env.GRAPHQL_URL || 'http://localhost:4000/graphql'
+      const GRAPHQL_API = import.meta.env.GRAPHQL_URL || 'http://localhost:4000/graphql'
       const response = await fetch(GRAPHQL_API, {
         method: 'POST',
         headers: {

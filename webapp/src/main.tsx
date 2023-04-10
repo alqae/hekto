@@ -1,3 +1,4 @@
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
@@ -18,10 +19,9 @@ import {
 
 import 'video-react/dist/video-react.css'; // import css
 
-import reportWebVitals from './reportWebVitals'
+import { clearToken } from './store/reducers'
 import { store } from './store'
 import App from './App'
-import { clearToken } from './store/reducers'
 
 const cache = new InMemoryCache()
 
@@ -55,7 +55,7 @@ const requestLink = new ApolloLink((operation, forward) =>
 )
 
 const client = new ApolloClient({
-  connectToDevTools: process.env.NODE_ENV === 'development',
+  connectToDevTools: import.meta.env.NODE_ENV === 'development',
   link: from([
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors)
@@ -72,7 +72,7 @@ const client = new ApolloClient({
     }),
     requestLink,
     new HttpLink({
-      uri: process.env.GRAPHQL_URL || 'http://localhost:4000/graphql',
+      uri: import.meta.env.GRAPHQL_URL || 'http://localhost:4000/graphql',
       credentials: 'include'
     })
   ]),
@@ -87,10 +87,9 @@ const client = new ApolloClient({
   },
 })
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const persistor = persistStore(store)
 
-root.render(
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ApolloProvider client={client}>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -99,8 +98,3 @@ root.render(
     </Provider>
   </ApolloProvider>
 )
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals()

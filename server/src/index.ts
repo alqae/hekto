@@ -88,7 +88,7 @@ import {
 
   await apolloServer.start()
   apolloServer.applyMiddleware({ app, cors: {
-    origin: process.env.URL_SITE ?? "http://localhost:3000",
+    origin: process.env.URL_SITE,
     credentials: true,
   }})
 

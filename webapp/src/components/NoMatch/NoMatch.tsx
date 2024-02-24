@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 
-import NotFoundImage from '../../assets/images/404.png'
+import NotFoundImage from '@assets/images/404.png'
 
-import { Heading } from '../Heading'
-import { Button } from '../Button'
+import Heading from '../Heading'
+import Button from '../Button'
 
 export interface NoMatchProps { }
 

@@ -7,8 +7,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { AiOutlineMail, AiOutlineLock } from 'react-icons/ai'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 
-import { useForgotPasswordMutation, useResetPasswordMutation } from '../../generated/graphql'
-import { Button, Field, Heading } from '../../components'
+import { useForgotPasswordMutation, useResetPasswordMutation } from '@graphql'
+import Heading from '@components/Heading'
+import Button from '@components/Button'
+import Field from '@components/Field'
 
 interface Props { }
 
@@ -106,7 +108,7 @@ const ForgotPassword: React.FC<Props> = () => {
       <form onSubmit={methods.handleSubmit(onSubmit)} className="mt-4 my-2 text-start">
         {
           token ? (
-            <React.Fragment>
+            <>
               <Field
                 suffixIcon={<AiOutlineLock />}
                 placeholder="Password"
@@ -123,7 +125,7 @@ const ForgotPassword: React.FC<Props> = () => {
                 name="confirmPassword"
                 control={methods.control}
               />
-            </React.Fragment>
+            </>
           ) : (
             <Field
               suffixIcon={<AiOutlineMail />}

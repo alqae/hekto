@@ -3,14 +3,15 @@ import classNames from 'classnames'
 import styles from './about.module.scss'
 import { AnimationProps, motion } from 'framer-motion'
 
-import AboutImage from '../../assets/images/about.png'
-import TruckImage from '../../assets/images/features/truck.svg';
-import CashBackImage from '../../assets/images/features/cashback.svg';
-import QualityImage from '../../assets/images/features/quality.svg';
-import SupportImage from '../../assets/images/features/support.svg';
+import AboutImage from '@assets/images/about.png'
+import TruckImage from '@assets/images/features/truck.svg'
+import CashBackImage from '@assets/images/features/cashback.svg'
+import QualityImage from '@assets/images/features/quality.svg'
+import SupportImage from '@assets/images/features/support.svg'
 
-
-import { Button, Carousel, Heading, Paragraph } from '../../components'
+import Paragraph from '@components/Paragraph'
+import Heading from '@components/Heading'
+import Button from '@components/Button'
 
 const transition: AnimationProps['transition'] = {
   duration: 0.5,
@@ -48,7 +49,7 @@ const About: React.FC<AboutProps> = () => {
   ]
 
   return (
-    <React.Fragment>
+    <>
       <section className={classNames('container', 'd-flex', 'gap-4', 'justify-content-center')}>
         <motion.div
           viewport={{ once: true }}
@@ -114,7 +115,7 @@ const About: React.FC<AboutProps> = () => {
           {/* <Carousel wrapperThumbnailClassName="d-flex gap-2" wrapperSlideClassName="col-7 mx-auto" /> */}
         </div>
       </section>
-    </React.Fragment>
+    </>
   )
 }
 

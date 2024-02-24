@@ -6,11 +6,11 @@ import { AiFillInstagram, AiOutlineTwitter } from 'react-icons/ai'
 
 import styles from './Footer.module.scss'
 
-import { Logo } from '../Logo'
+import Logo from '../Logo'
 
 export interface FooterProps { }
 
-export const Footer: React.FC<FooterProps> = () => (
+const Footer: React.FC<FooterProps> = () => (
   <footer>
     <div className={styles.footer}>
       <div className="container row mx-auto">
@@ -78,3 +78,5 @@ export const Footer: React.FC<FooterProps> = () => (
     </div>
   </footer>
 )
+
+export default Footer

@@ -4,7 +4,7 @@ import { IconType } from 'react-icons'
 import styles from './ButtonIcon.module.scss'
 import { motion, HTMLMotionProps } from 'framer-motion'
 
-interface ButtonProps extends HTMLMotionProps<'button'>  {
+interface ButtonProps extends HTMLMotionProps<'button'> {
   icon: IconType
   size?: number
   color?: 'primary' | 'secondary' | 'tertiary'

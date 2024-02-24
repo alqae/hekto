@@ -3,9 +3,8 @@ import classNames from 'classnames'
 import { motion } from 'framer-motion'
 import styles from './Tabs.module.scss'
 
-import { usePrevious } from '../../hooks'
-import { Paragraph } from '../Paragraph'
-import { Heading } from '../Heading'
+import { usePrevious } from '@hooks'
+import Heading from '../Heading'
 
 export interface TabsProps {
   className?: string
@@ -17,7 +16,7 @@ export interface TabsProps {
   }[]
 }
 
-export const Tabs: React.FC<TabsProps> = ({
+const Tabs: React.FC<TabsProps> = ({
   tabs,
   className,
   headerClassName,
@@ -54,3 +53,5 @@ export const Tabs: React.FC<TabsProps> = ({
     </div>
   )
 }
+
+export default Tabs

@@ -1,7 +1,8 @@
 import React from 'react'
 import classNames from 'classnames'
 import styles from './badge.module.scss'
-import { Paragraph } from '../Paragraph'
+
+import Paragraph from '../Paragraph'
 
 interface Props {
   isActive?: boolean

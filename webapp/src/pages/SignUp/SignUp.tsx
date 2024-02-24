@@ -8,8 +8,10 @@ import { Link, redirect } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { AiOutlineLock, AiOutlineMail } from 'react-icons/ai'
 
-import { Button, Checkbox, Field, Heading } from '../../components'
-import { useSignUpMutation } from '../../generated/graphql'
+import Heading from '@components/Heading'
+import Field from '@components/Field'
+import Button from '@components/Button'
+import { useSignUpMutation } from '@graphql'
 
 interface Props { }
 
@@ -23,16 +25,16 @@ interface UserSignUpForm {
 
 const formSchema = Yup.object().shape({
   firstName: Yup.string()
-    .required("FirstName is required"),
+    .required('FirstName is required'),
   lastName: Yup.string()
-    .required("LastName is required"),
+    .required('LastName is required'),
   email: Yup.string()
-    .required("Email is required")
-    .email("Email is invalid"),
+    .required('Email is required')
+    .email('Email is invalid'),
   password: Yup.string()
-    .required("Password is required")
-    .min(8, "Password length should be at least 8 characters")
-    .max(12, "Password cannot exceed more than 12 characters"),
+    .required('Password is required')
+    .min(8, 'Password length should be at least 8 characters')
+    .max(12, 'Password cannot exceed more than 12 characters'),
 })
 
 const SignUp: React.FC<Props> = () => {
@@ -40,10 +42,10 @@ const SignUp: React.FC<Props> = () => {
 
   const methods = useForm<UserSignUpForm>({
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
       termsAndConditions: false
     },
     resolver: yupResolver(formSchema)
@@ -63,7 +65,7 @@ const SignUp: React.FC<Props> = () => {
           })
 
           if (result.data?.signUp) {
-            redirect("/auth/sign-in")
+            redirect('/auth/sign-in')
             resolve(result.data?.signUp)
           }
         } catch (error) {

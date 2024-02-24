@@ -2,9 +2,9 @@ import React from 'react'
 import classNames from 'classnames'
 import { motion } from 'framer-motion'
 import styles from './checkbox.module.scss'
-import { Control, Controller, RegisterOptions, UseFormRegister, UseFormRegisterReturn } from 'react-hook-form'
+// import { Control, Controller, RegisterOptions, UseFormRegister, UseFormRegisterReturn } from 'react-hook-form'
 
-import { Paragraph } from '../Paragraph'
+import Paragraph from '../Paragraph'
 
 interface CheckboxProps {
   name: string
@@ -43,7 +43,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
       )}
     >
       {render}
-  
+
       <div
         className={classNames(styles.checkbox, { [styles.checked]: checked })}
         style={customColor ? { backgroundColor: customColor, borderColor: customColor } : {}}
@@ -66,7 +66,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
           />
         </svg>
       </div>
-  
+
       {label}
     </Paragraph>
     // <Controller
@@ -75,7 +75,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
     //   rules={{ required, onChange }}
     //   defaultValue={defaultValue}
     //   render={({ field, fieldState: { error } }) => (
-        
+
     //   )}
     // />
   )

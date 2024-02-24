@@ -17,7 +17,7 @@ const reducer = combineReducers({
 const middleware = [
   thunk,
   ...(
-    import.meta.env.NODE_ENV === 'development' ?
+    import.meta.env.NODE_ENV !== 'production' ?
       [
         /* Development middleware */
         logger,

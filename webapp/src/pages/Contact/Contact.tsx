@@ -6,9 +6,12 @@ import styles from './Contact.module.scss'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { AnimationProps, motion } from 'framer-motion'
 
-import ContactImage from '../../assets/images/contact.png'
+import ContactImage from '@assets/images/contact.png'
 
-import { Button, Field, Heading, Paragraph } from '../../components'
+import Paragraph from '@components/Paragraph'
+import Heading from '@components/Heading'
+import Button from '@components/Button'
+import Field from '@components/Field'
 
 const transition: AnimationProps['transition'] = {
   duration: 0.5,

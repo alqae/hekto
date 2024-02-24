@@ -296,7 +296,7 @@ export type SearchQueryVariables = Exact<{
 }>;
 
 
-export type SearchQuery = { __typename?: 'Query', search: Array<{ __typename?: 'Product', id: number, name: string, description: string, price: number, rating?: number | null, videoURL: string, quantity: number, createdAt: number, updatedAt: number, categories?: Array<{ __typename?: 'Category', id: number, name: string }> | null, sizes?: Array<{ __typename?: 'Size', id: number, value: string }> | null, colors?: Array<{ __typename?: 'Color', id: number, value: string }> | null, thumbnail?: { __typename?: 'Asset', id: number, description: string, path: string, size: number } | null }> };
+export type SearchQuery = { __typename?: 'Query', search: Array<{ __typename?: 'Product', id: number, name: string, description: string, price: number, rating?: number | null, videoURL: string, quantity: number, createdAt: number, updatedAt: number, categories?: Array<{ __typename?: 'Category', id: number, name: string }> | null, sizes?: Array<{ __typename?: 'Size', id: number, value: string }> | null, colors?: Array<{ __typename?: 'Color', id: number, value: string }> | null, thumbnail?: { __typename?: 'Asset', id: number, description: string, path: string, size: number } | null, reviews?: Array<{ __typename?: 'Review', id: number }> | null }> };
 
 export type FindProductByIdQueryVariables = Exact<{
   productId: Scalars['Float'];
@@ -542,6 +542,7 @@ export const SearchDocument = gql`
     price
     rating
     videoURL
+    quantity
     categories {
       id
       name
@@ -560,7 +561,9 @@ export const SearchDocument = gql`
       path
       size
     }
-    quantity
+    reviews {
+      id
+    }
     createdAt
     updatedAt
   }

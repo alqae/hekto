@@ -7,24 +7,19 @@ import { AnimationProps, motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { AppDispatch, RootState } from '../../store'
-import { Product } from '../../generated/graphql'
-import { search } from '../../store/reducers'
-import {
-  Button,
-  Dropdown,
-  Heading,
-  Pagination,
-  Paragraph,
-  ProductCard,
-} from '../../components'
-import {
-  FilterCategory,
-  FilterColor,
-  FilterPrice,
-  FilterRating,
-} from './components'
-import { faker } from '@faker-js/faker'
+import FilterCategory from './components/FilterCategory'
+// import FilterRating from './components/FilterRating'
+import FilterColor from './components/FilterColor'
+import FilterPrice from './components/FilterPrice'
+import { AppDispatch, RootState } from '@store'
+import ProductCard from '@components/ProductCard'
+import Pagination from '@components/Pagination'
+import Paragraph from '@components/Paragraph'
+import Dropdown from '@components/Dropdown'
+import Heading from '@components/Heading'
+import Button from '@components/Button'
+import { search } from '@store/reducers'
+import { Product } from '@graphql'
 
 export interface SearchProps { }
 
@@ -212,14 +207,14 @@ const Shop: React.FC<SearchProps> = () => {
     createdAt: 0,
     updatedAt: 0,
   })
-    
+
   return (
     <section className="container d-flex flex-wrap mt-0 pt-md-15 pt-8">
       <FormProvider {...methods}>
         <motion.div
           viewport={{ once: true }}
-          initial={{ opacity: 0, y: '-100%' }}
-          whileInView={{ opacity: 1, y: 0, zIndex: 2 }}
+          initial={{ opacity: 0, y: '-100%', zIndex: 1 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={transition}
           className="row col-12 align-items-center"
         >
@@ -229,7 +224,7 @@ const Shop: React.FC<SearchProps> = () => {
           </div>
 
           <div className="col-auto d-flex align-items-center">
-            <Paragraph as="label"color="secondary" className="me-1">
+            <Paragraph as="label" color="secondary" className="me-1">
               Per Page:
             </Paragraph>
             <Dropdown
@@ -259,7 +254,7 @@ const Shop: React.FC<SearchProps> = () => {
               onClick={() => setHitsDirection(SearchMode.Row)}
             >
               <AiOutlineOrderedList />
-            </button> 
+            </button>
             <button
               className={classNames({ [styles.active]: isGrid })}
               onClick={() => setHitsDirection(SearchMode.Grid)}

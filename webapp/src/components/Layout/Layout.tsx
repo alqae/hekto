@@ -1,14 +1,13 @@
 import React from 'react'
 import styles from './layout.module.scss'
-import { AnimatePresence } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useMatch, useNavigate } from 'react-router-dom'
 
-import { Breadcrumbs } from '../Breadcrumbs'
-import { RootState } from '../../store'
-import { Footer } from '../Footer'
-import { Navbar } from '../Navbar'
-import { setToken } from '../../store/reducers'
+import Breadcrumbs from '../Breadcrumbs'
+import Footer from '../Footer'
+import Navbar from '../Navbar'
+import { RootState } from '@store'
+import { setToken } from '@store/reducers'
 
 interface Props {
   children?: React.ReactNode
@@ -38,16 +37,16 @@ const Layout: React.FC<Props> = () => {
   }, [token, dispatch, navigate])
 
   return (
-    <React.Fragment>
+    <>
       <Navbar />
-        <main>
-          {!isIndexPage && <Breadcrumbs />}
-          <div className={styles.layout} id="layout">
-            <Outlet />
-          </div>
-        </main>
+      <main>
+        {!isIndexPage && <Breadcrumbs />}
+        <div className={styles.layout} id="layout">
+          <Outlet />
+        </div>
+      </main>
       <Footer />
-    </React.Fragment>
+    </>
   )
 }
 

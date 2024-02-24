@@ -1,1 +1,1 @@
-export * from './FilterCategory';
+export { default } from './FilterCategory'

@@ -1,0 +1,73 @@
+@import "../../styles/init";
+
+.current, .thumbnails {
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.current {
+  height: 70vh;
+}
+
+.thumbnails {
+  position: absolute;
+  bottom: 0;
+
+  .thumbnail {
+    width: 75px;
+    height: 75px;
+    display: inline-block;
+    user-select: none;
+
+    &.active {
+      border: 2px solid $color-black;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.arrow, .close {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  user-select: none;
+  background-color: rgba(0,0,0,0.35);
+
+  svg {
+    font-size: 100px;
+  }
+
+  &:hover {
+    background-color: rgba(0,0,0,0.5);
+  }
+}
+
+.arrow {
+  position: absolute;
+
+  &Next {
+    right: 0;
+  }
+
+  &Prev {
+    left: 0;
+  }
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 75px;
+  height: 75px;
+
+  svg {
+    font-size: 75px;
+  }
+}

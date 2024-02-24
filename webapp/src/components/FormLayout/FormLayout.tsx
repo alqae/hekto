@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux'
 import styles from './form-layout.module.scss'
 import { Outlet, useNavigate } from 'react-router-dom'
 
-import { Breadcrumbs } from '../Breadcrumbs'
-import { RootState } from '../../store'
-import { Footer } from '../Footer'
-import { Navbar } from '../Navbar'
+import Breadcrumbs from '../Breadcrumbs'
+import { RootState } from '@store'
+import Footer from '../Footer'
+import Navbar from '../Navbar'
 
 interface Props {
   children?: React.ReactNode

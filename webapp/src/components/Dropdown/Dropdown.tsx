@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from './dropdown.module.scss'
-import Select, { OptionsOrGroups } from 'react-select'
+import Select from 'react-select'
 
-import { Paragraph } from '../Paragraph'
+import Paragraph from '../Paragraph'
 
 export interface DropdownProps {
   options: {
@@ -20,7 +20,6 @@ const Dropdown: React.FC<DropdownProps> = ({ label, options, onChange, defaultVa
   <Select
     closeMenuOnSelect={false}
     placeholder={<Paragraph as="label">{label}</Paragraph>}
-    // defaultInputValue={defaultInputValue}
     isDisabled={options.length <= 1}
     defaultValue={defaultValue}
     value={value}
@@ -44,10 +43,10 @@ const Dropdown: React.FC<DropdownProps> = ({ label, options, onChange, defaultVa
       container: (base) => ({
         ...base,
         display: 'inline-block',
-        minWidth: '235px',
+        width: '235px',
+        zIndex: 9999,
       }),
       control: (base) => ({ ...base, outline: 'none' }),
-      menu: (base) => ({ ...base, zIndex: 9999 }),
     }}
   />
 )

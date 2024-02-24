@@ -1,1 +1,1 @@
-export { default as FilterColor } from './FilterColor'
+export { default } from './FilterColor'

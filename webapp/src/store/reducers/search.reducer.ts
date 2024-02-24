@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-import { Product, SearchQuery } from '../../generated/graphql'
+import { Product } from '@graphql'
 
 interface SearchState {
   hits: Product[]
@@ -17,10 +17,7 @@ const initialState: SearchState = {
   loading: false,
 }
 
-export const search = createAsyncThunk<{
-  hits: Product[]
-  duration: number
-} | undefined, {
+export interface SearchFilters {
   name?: string
   maxPrice?: number
   minPrice?: number
@@ -29,21 +26,35 @@ export const search = createAsyncThunk<{
   categories?: number[]
   sortKey?: string
   sortDirection?: string
-} | undefined>(
+}
+
+export interface SearchResult {
+  hits: Product[]
+  duration: number
+}
+
+// createAsyncThunk.withTypes<{
+//   state: SearchState
+//   dispatch: AppDispatch
+//   rejectValue: Error | string | unknown
+//   extra: SearchFilters
+// }>()
+
+export const search = createAsyncThunk<SearchResult, SearchFilters>(
   'search/search',
   async (variables, { dispatch }) => {
     dispatch(setLoading(true))
 
-    try {
-      const time1 = performance.now()
-      const GRAPHQL_API = import.meta.env.GRAPHQL_URL || 'http://localhost:4000/graphql'
-      const response = await fetch(GRAPHQL_API, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: `
+    // try {
+    const time1 = performance.now()
+    const GRAPHQL_API = import.meta.env.GRAPHQL_URL || 'http://localhost:4000/graphql'
+    const response = await fetch(GRAPHQL_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `
             query Search(
               $name: String
               $maxPrice: Float
@@ -98,19 +109,20 @@ export const search = createAsyncThunk<{
               }
             }
           `,
-          variables,
-        }),
-      })
-      const products = await response.json()
-      const time2 = performance.now()
-      const duration = time2 - time1
-      const hits = products.data?.search
-      return { hits, duration }
-    } catch (error) {
-      dispatch(setError(error))
-    }
+        variables,
+      }),
+    })
+    const products = await response.json()
+    const time2 = performance.now()
+    const duration = time2 - time1
+    const hits = products.data?.search
+    return { hits, duration }
+    // } catch (error) {
+    //   dispatch(setError(error))
+    // }
   },
 )
+
 
 const SearchSlice = createSlice({
   name: 'search',

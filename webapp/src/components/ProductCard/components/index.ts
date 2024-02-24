@@ -1,1 +1,1 @@
-export { ColorRadio } from './ColorRadio'
+export * from './ColorRadio'

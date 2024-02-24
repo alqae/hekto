@@ -2,6 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { Link, NavLink } from 'react-router-dom'
 import { FiPhoneCall } from 'react-icons/fi'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   AiOutlineMail,
   AiOutlineUser,
@@ -10,17 +11,15 @@ import {
   AiOutlineSearch,
   AiOutlineLogout,
 } from 'react-icons/ai'
-
 import styles from './Navbar.module.scss'
 
-import { Logo } from '../Logo'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../store'
-import { clearToken } from '../../store/reducers'
+import Logo from '../Logo'
+import { AppDispatch, RootState } from '@store'
+import { clearToken } from '@store/reducers'
 
-export type NavbarProps = { }
+export type NavbarProps = {}
 
-export const Navbar: React.FC<NavbarProps> = () => {
+const Navbar: React.FC<NavbarProps> = () => {
   const isAuthenticated = useSelector<RootState>((state) => !!state.auth.token)
   const dispatch = useDispatch<AppDispatch>()
   const activeRouteProps = {
@@ -82,3 +81,5 @@ export const Navbar: React.FC<NavbarProps> = () => {
     </header>
   );
 }
+
+export default Navbar

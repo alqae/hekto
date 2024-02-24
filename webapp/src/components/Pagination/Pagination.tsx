@@ -2,7 +2,6 @@ import React from 'react'
 import classNames from 'classnames'
 import styles from './Pagination.module.scss'
 import { BsSkipStartFill, BsSkipEndFill } from 'react-icons/bs'
-import { Paragraph } from '../Paragraph'
 import { motion } from 'framer-motion'
 
 export interface PaginationProps {

@@ -1,0 +1,25 @@
+@import "../../styles/init";
+
+.star {
+  fill: $color-gray;
+  font-size: 25px;
+  vertical-align: baseline;
+
+  &.active {
+    fill: map-get($theme-colors, warning);
+  }
+}
+
+.stars {
+  height: 25px;
+  display: flex;
+  align-items: center;
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  label {
+    height: 100%;
+  }
+}

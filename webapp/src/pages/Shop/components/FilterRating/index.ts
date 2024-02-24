@@ -1,1 +1,1 @@
-export { default as FilterRating } from './FilterRating'
+export { default } from './FilterRating'

@@ -1,20 +1,28 @@
 import React from 'react'
 import * as Yup from 'yup'
-import { useTable } from 'react-table'
+import currency from 'currency.js'
+import classNames from 'classnames'
+import { faker } from '@faker-js/faker'
 import { useForm } from 'react-hook-form'
+import { AiOutlineClose } from 'react-icons/ai'
+import { useNavigate } from 'react-router-dom'
 import styles from './ShoppingCart.module.scss'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { ShoppingCartProduct, clearShoppingCart, updateProductQuantity } from '../../store/reducers'
-import { Button, Counter, Field, Heading, Paragraph } from '../../components'
-import { AppDispatch, RootState } from '../../store'
-import { Product } from '../../generated/graphql'
-import classNames from 'classnames'
-import { useNavigate } from 'react-router-dom'
-import { faker } from '@faker-js/faker'
-import { MdOutlineSmsFailed } from 'react-icons/md'
-import { BsFillPatchCheckFill } from 'react-icons/bs'
+import ColorRadio from '@components/ProductCard/components/ColorRadio'
+import { AppDispatch, RootState } from '@store'
+import Paragraph from '@components/Paragraph'
+import Counter from '@components/Counter'
+import Heading from '@components/Heading'
+import Button from '@components/Button'
+import Field from '@components/Field'
+import {
+  ShoppingCartProduct,
+  clearShoppingCart,
+  removeProductFromCart,
+  updateProductQuantity,
+} from '@store/reducers'
 
 interface ShippingForm {
   country: string
@@ -33,36 +41,9 @@ export interface ShoppingCartProps { }
 export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
-  const products = useSelector<RootState, ShoppingCartProduct[]>((state) => state.shared.shoppingCart)
+
   const isAviableShipping = faker.datatype.boolean()
-  console.warn('products', products);
-  
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({
-    columns: [
-      {
-        Header: 'Product',
-      },
-      {
-        Header: 'Price',
-      },
-      {
-        Header: 'Size',
-      },
-      {
-        Header: 'Quantity',
-      },
-      {
-        Header: 'Total',
-      },
-    ],
-    data: products ?? [],
-  })
+  const products = useSelector<RootState, ShoppingCartProduct[]>((state) => state.shared.shoppingCart)
 
   const [totals, setTotals] = React.useState([
     {
@@ -87,6 +68,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
       value: products.reduce((acc, { quantity, product }) => acc + product.price * quantity, 0),
     },
   ])
+
   const { handleSubmit, control } = useForm<ShippingForm>({
     resolver: yupResolver(shippingFormSchema),
     defaultValues: {
@@ -107,72 +89,67 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
       <div className="col-8">
         {!!products.length ? (
           <>
-            {/* <table>
+            <table className={styles.productsTable}>
               <thead>
                 <tr>
-                  <td>
-                    <Heading level={4} size="sm" color="secondary" className="mt-4 mb-3">Product</Heading>
+                  <td colSpan={2}>
+                    <Heading level={4} size="sm" color="secondary">Product</Heading>
                   </td>
                   <td>
-                    <Heading level={4} size="sm" color="secondary" className="mt-4 mb-3">Price</Heading>
+                    <Heading level={4} size="sm" color="secondary">Price</Heading>
                   </td>
                   <td>
-                    <Heading level={4} size="sm" color="secondary" className="mt-4 mb-3">Quantity</Heading>
+                    <Heading level={4} size="sm" color="secondary">Size</Heading>
                   </td>
                   <td>
-                    <Heading level={4} size="sm" color="secondary" className="mt-4 mb-3">Total</Heading>
+                    <Heading level={4} size="sm" color="secondary">Quantity</Heading>
+                  </td>
+                  <td>
+                    <Heading level={4} size="sm" color="secondary">Total</Heading>
                   </td>
                 </tr>
               </thead>
+
               <tbody>
-                {products.map(({ product, quantity }) => (
+                {products.map(({ product, quantity, size, color }, index) => (
                   <tr className={styles.productRow} key={product.id}>
-                    <td className="py-2 col-5">
-                      <div className="d-flex align-items-center">
+                    <td className="py-2" colSpan={2}>
+                      <div className={classNames(styles.thumbnail, 'd-flex', 'align-items-center')}>
+                        <div className={styles.close} onClick={() => dispatch(removeProductFromCart(product.id))}>
+                          <AiOutlineClose />
+                        </div>
+
                         <img src={product.thumbnail?.path} alt={product.name} />
 
                         <div className="ms-2">
-                          <Paragraph className="mb-0" color="secondary">{product.name}</Paragraph>
-                          <Paragraph className="mb-0" color="gray">Color: Black</Paragraph>
-                          <Paragraph className="mb-0" color="gray">Size: XL</Paragraph>
+                          <Paragraph color="secondary">{product.name}</Paragraph>
+                          <div className="d-flex align-items-center">
+                            <Paragraph className="me-1" color="gray">Color:</Paragraph>
+                            <ColorRadio
+                              className="d-inline-block"
+                              color={color?.value}
+                              name={product.name}
+                              value={true}
+                            />
+                          </div>
+                          <Paragraph color="gray">Size: {size?.value}</Paragraph>
                         </div>
                       </div>
                     </td>
-                    <Paragraph as="td" color="secondary">${product.price}</Paragraph>
-                    <td>
+                    <Paragraph as="td" color="secondary">{currency(product.price).format()}</Paragraph>
+                    <Paragraph as="td" color="secondary">{size?.value}</Paragraph>
+                    <td className={classNames(styles.quantityRow)}>
                       <Counter
                         min={1}
                         max={product.quantity}
+                        className="mx-3"
                         defaultValue={quantity}
-                        onChange={(quantity) => dispatch(updateProductQuantity({ id: product.id, quantity }))}
+                        onChange={(value) => dispatch(updateProductQuantity({ quantity: value, index }))}
                       />
                     </td>
-                    <Paragraph as="td" color="secondary">£219.00</Paragraph>
+                    <Paragraph as="td" color="secondary">{currency(product.price).multiply(quantity).format()}</Paragraph>
                   </tr>
                 ))}
-              </tbody>
-            </table> */}
-            <table {...getTableProps()}>
-              <thead>
-                {headerGroups.map(headerGroup => (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map(column => (
-                      <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody {...getTableBodyProps()}>
-                {rows.map((row, i) => {
-                  prepareRow(row)
-                  return (
-                    <tr {...row.getRowProps()}>
-                      {row.cells.map(cell => {
-                        return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                      })}
-                    </tr>
-                  )
-                })}
               </tbody>
             </table>
 
@@ -191,7 +168,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
       </div>
 
       <div className="col-4 text-center">
-        <Heading level={3} size="sm" color="secondary" className="mb-3">Cart Totals</Heading>
+        {/* <Heading level={3} size="sm" color="secondary" className="mb-3">Cart Totals</Heading>
         <div className={styles.Panel}>
           {totals.map((total) => (
             <div key={total.id} className={classNames(styles.Row, 'd-flex', 'justify-content-between', 'mb-4', 'pb-1')}>
@@ -217,7 +194,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
           </div>
 
           <Button>Proceed To Checkout</Button>
-        </div>
+        </div> */}
 
         <Heading level={3} size="sm" color="secondary" className="mt-4 mb-3">Calculate Shopping</Heading>
         <form className={styles.Panel} onSubmit={handleSubmit(onCalculateShipping)}>

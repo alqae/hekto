@@ -30,3 +30,40 @@
     fill: map-get($theme-colors, success);
   }
 }
+
+.thumbnail {
+  position: relative;
+
+  .close {
+    position: absolute;
+    top: -7px;
+    left: -7px;
+    z-index: 3;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.75);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      font-size: 16px;
+      fill: $color-white;
+    }
+  }
+}
+
+.quantityRow {
+  width: 150px;
+}
+
+.productsTable {
+  thead, tbody {
+
+    td:not(:first-child) {
+      text-align: center;
+    }
+  }
+}

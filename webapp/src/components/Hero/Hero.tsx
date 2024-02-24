@@ -1,14 +1,11 @@
 import React from 'react'
-import classNames from 'classnames'
 import { motion } from 'framer-motion'
 import styles from './hero.module.scss'
-import { FaPinterestP } from 'react-icons/fa'
-import { ImFacebook, ImTwitter } from 'react-icons/im'
 
-import HeroImage from '../../assets/images/home/banner-promotional.png'
-import { Paragraph } from '../Paragraph'
-import { Heading } from '../Heading'
-import { Button } from '../Button'
+import HeroImage from '@assets/images/home/banner-promotional.png'
+import Paragraph from '../Paragraph'
+import Heading from '../Heading'
+import Button from '../Button'
 
 export interface HeroProps {
   variant?: 'home' | 'about'
@@ -16,7 +13,7 @@ export interface HeroProps {
 
 const Hero: React.FC<HeroProps> = () => (
   <motion.div
-    viewport={{ once:  true}}
+    viewport={{ once: true }}
     initial={{ y: '-100%' }}
     whileInView={{ y: 0 }}
     transition={{ delay: 0, duration: 0.5 }}
@@ -41,4 +38,4 @@ Hero.defaultProps = {
   variant: 'home'
 }
 
-export { Hero }
+export default Hero

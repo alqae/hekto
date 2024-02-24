@@ -4,6 +4,9 @@
   display: flex;
   align-items: center;
   height: 40px;
+  box-sizing: border-box;
+  width: 150px;
+  overflow: hidden;
 
   input {
     width: 50px;

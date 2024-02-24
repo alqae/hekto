@@ -1,1 +1,1 @@
-export { default as ColorRadio } from './ColorRadio'
+export { default } from './ColorRadio'

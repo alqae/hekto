@@ -24,6 +24,7 @@ query Search(
     price
     rating
     videoURL
+    quantity
     categories {
       id
       name
@@ -42,7 +43,9 @@ query Search(
       path
       size
     }
-    quantity
+    reviews {
+      id
+    }
     createdAt
     updatedAt
   }

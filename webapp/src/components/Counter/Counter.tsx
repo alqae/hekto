@@ -1,34 +1,36 @@
-import { motion } from 'framer-motion';
-import React from 'react';
+import React from 'react'
+import classNames from 'classnames'
+import { motion } from 'framer-motion'
 
-import styles from './Counter.module.scss';
+import styles from './Counter.module.scss'
 
 export interface CounterProps {
   onChange: (value: number) => void;
   defaultValue: number;
   max?: number;
   min?: number;
+  className?: string;
 }
 
-export const Counter: React.FC<CounterProps> = ({ max, min, onChange, defaultValue }) => {
-  const [value, setMessage] = React.useState(defaultValue ?? 0);
+const Counter: React.FC<CounterProps> = ({ max, min, onChange, defaultValue, className }) => {
+  const [value, setValue] = React.useState(defaultValue ?? 0);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseInt(event.target.value ?? 0);
-    setMessage(newValue);
+  const handleChange = (newValue: number) => {
+    setValue(newValue);
     onChange(newValue);
   };
 
   React.useEffect(() => {
-    setMessage(defaultValue);
+    setValue(defaultValue);
   }, [defaultValue]);
 
   return (
-    <div className={styles.Counter}>
+    <div className={classNames(styles.Counter, { [className ?? '']: className })}>
       <motion.button
         disabled={value === min}
-        onClick={() => onChange(value - 1)}
-        whileTap={{scale: 0.95}}
+        onClick={() => handleChange(value - 1)}
+        whileTap={{ scale: 0.95 }}
+        type="button"
       >
         -
       </motion.button>
@@ -36,16 +38,26 @@ export const Counter: React.FC<CounterProps> = ({ max, min, onChange, defaultVal
         type="text"
         id="counter"
         name="counter"
-        onChange={handleChange}
+        onChange={(e) => handleChange(parseInt(e.target.value))}
         value={value}
       />
       <motion.button
         disabled={value === max}
-        onClick={() => onChange(value + 1)}
-        whileTap={{scale: 0.95}}
+        onClick={() => handleChange(value + 1)}
+        whileTap={{ scale: 0.95 }}
+        type="button"
       >
         +
       </motion.button>
     </div>
   )
 }
+
+Counter.defaultProps = {
+  onChange: () => { },
+  defaultValue: 0,
+  max: 999,
+  min: 0,
+}
+
+export default Counter

@@ -1,37 +1,43 @@
 import React from 'react'
 import classNames from 'classnames'
 import { Player } from 'video-react'
-import Rating from 'react-star-review'
 import { motion } from 'framer-motion'
+import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import styles from './Product.module.scss'
-// import { FaFacebookF } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
+import ReactImageMagnify from 'react-image-magnify'
 import { AiFillInstagram, AiOutlineTwitter, AiFillFacebook } from 'react-icons/ai'
 
-import { Product, useFindProductByIdQuery, useSearchQuery } from '../../generated/graphql'
-import { addProductToCart } from '../../store/reducers'
-import { AppDispatch } from '../../store'
-import {
-  Button,
-  Carousel,
-  Counter,
-  Dropdown,
-  Heading,
-  Loader,
-  NoMatch,
-  Paragraph,
-  ProductCard,
-  Tabs,
-} from '../../components'
+import { Product, useFindProductByIdQuery, useSearchQuery } from '@graphql'
+import ColorRadio from '@components/ProductCard/components/ColorRadio'
+import { addProductToCart } from '@store/reducers'
+import ImageViewer from '@components/ImageViewer'
+import ProductCard from '@components/ProductCard'
+import Paragraph from '@components/Paragraph'
+import Carousel from '@components/Carousel'
+import Dropdown from '@components/Dropdown'
+import Heading from '@components/Heading'
+import Counter from '@components/Counter'
+import NoMatch from '@components/NoMatch'
+import Loader from '@components/Loader'
+import Button from '@components/Button'
+import { AppDispatch } from '@store'
+import Tabs from '@components/Tabs'
+import Rate from '@components/Rate'
+
+interface AddToCartForm {
+  quantity: number
+  size: number
+  color: number
+}
 
 interface ProductDetailProps { }
 
 const ProductDetail: React.FC<ProductDetailProps> = () => {
   const { id } = useParams() as { id: string }
-  const [alreadyDispatched, setAlreadyDispatched] = React.useState(false)
   const [activeImage, setActiveImage] = React.useState(0)
-  const [quantity, setQuantity] = React.useState(1)
+  const [showImageViewer, setShowImageViewer] = React.useState(false)
   const dispatch = useDispatch<AppDispatch>()
   const { data, loading } = useFindProductByIdQuery({
     variables: {
@@ -48,6 +54,25 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
     }
   })
 
+  const { setValue, watch, handleSubmit } = useForm<AddToCartForm>({
+    defaultValues: {
+      quantity: 1,
+      size: data?.product.sizes?.[0].id,
+      color: data?.product.colors?.[0].id,
+    }
+  })
+
+  const selectedColor = watch('color', data?.product.colors?.[0].id)
+
+  const handleAddToCart = ({ color, quantity, size }: AddToCartForm) => {
+    dispatch(addProductToCart({
+      quantity,
+      product: data?.product as Product,
+      size: data?.product.sizes?.find((productSize) => productSize.id === size),
+      color: data?.product.colors?.find((productColor) => productColor.id === color),
+    }))
+  }
+
   if (loading) {
     return <Loader />
   }
@@ -57,7 +82,13 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
   }
 
   return (
-    <React.Fragment>
+    <>
+      <ImageViewer
+        images={data.product.assets}
+        show={showImageViewer}
+        onClose={() => setShowImageViewer(false)}
+      />
+
       <motion.section
         viewport={{ once: true }}
         initial={{ opacity: 0, y: '-100%' }}
@@ -67,19 +98,12 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
       >
         <div className="col-6">
           <div className={classNames(styles.productImages, 'row')}>
-            <div className={classNames(styles.productImages__thumbnails, 'col-auto')}>
+            <div className={classNames(styles.productImages__thumbnails, 'col-auto', 'p-0')}>
               {data.product.assets?.map((image, index) => index !== activeImage && (
                 <motion.div
                   key={index}
                   whileTap={{ scale: 0.9 }}
-                  onClick={() => {
-                    setActiveImage(index)
-
-                    const el = document.getElementById('layout')
-                    if (el) {
-                      el.scrollIntoView({ behavior: 'smooth' })
-                    }
-                  }}
+                  onClick={() => setActiveImage(index)}
                   className={classNames(styles.productImages__thumbnail)}
                 >
                   <img src={image.path} alt={data.product.name} />
@@ -87,27 +111,56 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
               ))}
             </div>
 
-            <div className={classNames(styles.productImages__main, 'col')}>
+            <div className={classNames(styles.productImages__main, 'col')} onClick={() => setShowImageViewer(true)}>
               {data.product.assets && (
-                <img
-                  src={data.product.assets[activeImage]?.path}
-                  alt={data.product.name}
+                <ReactImageMagnify
+                  {...{
+                    smallImage: {
+                      alt: data.product.name,
+                      isFluidWidth: true,
+                      src: data.product.assets[activeImage]?.path,
+                    },
+                    largeImage: {
+                      src: data.product.assets[activeImage]?.path,
+                      width: 1000,
+                      height: 1000,
+                    },
+                    enlargedImageContainerStyle: {
+                      zIndex: 9999,
+                    },
+                    enlargedImageContainerDimensions: {
+                      width: '200%',
+                      height: '100%',
+                    },
+                    isHintEnabled: true,
+                    shouldHideHintAfterFirstActivation: false,
+                    enlargedImagePosition: 'over',
+                  }}
                 />
               )}
             </div>
           </div>
         </div>
 
-        <div className="col-6 ps-6 py-9">
+        <form className="col-6 ps-6 py-9" onSubmit={handleSubmit(handleAddToCart)}>
           <Heading level={1} size="md" className={styles.productName}>{data.product.name}</Heading>
 
           <div className="d-flex gap-1 align-items-center mb-2">
-            <Rating rating={data.product.rating} size={25} />
+            <Rate value={data.product.rating ?? 0} />
             <Paragraph size="md" color="secondary" className="m-0">({data.product.reviews?.length})</Paragraph>
           </div>
 
-          <div className="d-flex gap-1 aling-items-center">
+          <div className="d-flex gap-1 align-items-center">
             <Paragraph size="md" color="secondary" className="m-0">Color:</Paragraph>
+            {data.product.colors?.map((color) => (
+              <ColorRadio
+                key={color.id}
+                value={selectedColor === color.id}
+                name={`color-${color.id}`}
+                color={color.value}
+                onChange={() => setValue('color', color.id)}
+              />
+            ))}
           </div>
 
           <Paragraph size="md" color="primary" className={styles.productPrice}>${data.product.price}</Paragraph>
@@ -115,24 +168,12 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
           <div className="d-flex gap-1 align-items-center mb-2">
             <Paragraph size="md" color="secondary" className="m-0">Quantity:</Paragraph>
             <Counter
-              defaultValue={1}
-              onChange={(value) => {
-                console.warn('value', value)
-                setQuantity(value)
-              }}
               min={1}
+              defaultValue={1}
               max={data.product.quantity}
+              onChange={(value) => setValue('quantity', value)}
             />
-            <Button
-              fullWidth={false}
-              onClick={() => dispatch(addProductToCart({
-                quantity,
-                color: data.product.colors?.at(0),
-                size: data.product.sizes?.at(0),
-                product: data.product as Product,
-              }))}
-              className="ms-2"
-            >
+            <Button fullWidth={false} type="submit" className="ms-2">
               Add to cart
             </Button>
           </div>
@@ -140,7 +181,7 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
           <div className="d-flex gap-1 align-items-center mb-2">
             <Paragraph size="md" color="secondary" className="m-0">Size:</Paragraph>
             <Dropdown
-              onChange={(value) => console.log(value)}
+              onChange={(value) => setValue('size', parseInt(value.value))}
               defaultValue={data.product.sizes?.[0] ? {
                 value: data.product.sizes?.[0].id,
                 label: data.product.sizes?.[0].value,
@@ -172,7 +213,7 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
               </Link>
             </div>
           </div>
-        </div>
+        </form>
       </motion.section>
 
       <section className={styles.productOverview}>
@@ -227,7 +268,7 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
               <div className="col-3" key={`product-${similarProduct.id}`}>
                 <ProductCard
                   isLoading={similarProductsLoading}
-                  product={similarProduct}
+                  product={similarProduct as Product}
                   mode="grid"
                 />
               </div>
@@ -235,7 +276,7 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
           }
         </div>
       </section>
-    </React.Fragment>
+    </>
   )
 }
 

@@ -1,13 +1,13 @@
 import React from 'react'
 import styles from './ColorRadio.module.scss'
 
-import { Paragraph } from '../../../Paragraph'
+import Paragraph from '@components/Paragraph'
 import classNames from 'classnames'
 
 export interface RadioProps {
   className?: string
-  // value?: string | number
-  checked: boolean
+  value: boolean
+  defaultChecked?: boolean
   disabled?: boolean
   style?: React.CSSProperties
   name: string
@@ -19,7 +19,8 @@ export interface RadioProps {
 const ColorRadio: React.FC<RadioProps> = ({
   name,
   color,
-  checked,
+  value,
+  defaultChecked = false,
   onChange,
   label,
 }) => {
@@ -29,12 +30,19 @@ const ColorRadio: React.FC<RadioProps> = ({
       className={
         classNames(
           styles.radio,
-          { [styles.checked]: checked },
+          { [styles.checked]: value },
         )
       }
       style={{ borderColor: color }}
     >
-      <input type="radio" id={name} name={name} checked={checked} onChange={onChange} />
+      <input
+        type="radio"
+        id={name}
+        name={name}
+        defaultChecked={defaultChecked}
+        value={value.toString()}
+        onChange={onChange}
+      />
       <span style={{ backgroundColor: color }} className={styles.checkmark} />
       {label && <Paragraph as="span">{label}</Paragraph>}
     </label>

@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 import { NavLink } from 'react-router-dom'
 import useBreadcrumbs, { BreadcrumbsRoute, BreadcrumbMatch } from 'use-react-router-breadcrumbs'
 
 import styles from './Breadcrumbs.module.scss'
 
-import { useFindProductNameByIdQuery } from '../../generated/graphql';
-import { Heading } from '../Heading';
+import { useFindProductNameByIdQuery } from '@graphql'
+import Heading from '../Heading'
 
 // const userNamesById = { 1: "John" };
 
@@ -22,48 +22,48 @@ const DynamicProductBreadcrumb: React.FC<{ match: BreadcrumbMatch<string> }> = (
 
   if (error) return <span>Error</span>
   if (loading || !data) return <span>Loading...</span>
-  return <React.Fragment>{data.product.name}</React.Fragment>
+  return <>{data.product.name}</>
 };
 
 // define custom breadcrumbs for certain routes.
 // breadcrumbs can be components or strings.
 const routes: BreadcrumbsRoute<string>[] = [
   // { path: "/users/:userId", breadcrumb: DynamicUserBreadcrumb },
-  { path: "/shop/:id", breadcrumb: DynamicProductBreadcrumb },
+  { path: '/shop/:id', breadcrumb: DynamicProductBreadcrumb },
   {
-    path: "/shop/cart",
-    breadcrumb: () => <React.Fragment>Shopping Cart</React.Fragment>,
+    path: '/shop/cart',
+    breadcrumb: 'Shopping Cart',
   },
   {
-    path: "/about",
+    path: '/about',
     breadcrumb: () => <React.Fragment>About Us</React.Fragment>,
   },
   {
-    path: "/contact",
+    path: '/contact',
     breadcrumb: () => <React.Fragment>Contact Us</React.Fragment>,
   },
   {
-    path: "/faq",
+    path: '/faq',
     breadcrumb: () => <React.Fragment>FAQ</React.Fragment>,
   },
   {
-    path: "/",
+    path: '/',
     breadcrumb: () => <React.Fragment>Home</React.Fragment>,
   },
   {
-    path: "/auth",
+    path: '/auth',
     breadcrumb: () => <React.Fragment>Auth</React.Fragment>,
   },
   {
-    path: "/shop",
+    path: '/shop',
     breadcrumb: () => <React.Fragment>Shop</React.Fragment>,
   },
   {
-    path: "/auth/*",
+    path: '/auth/*',
     breadcrumb: () => <React.Fragment>My Account</React.Fragment>,
   },
   {
-    path: "*",
+    path: '*',
     breadcrumb: () => <React.Fragment>404 Not Found</React.Fragment>,
   }
 ];
@@ -79,7 +79,7 @@ const Breadcrumbs = () => {
         <Heading level={3} size="md">{lastBreadcrumb.breadcrumb}</Heading>
         <div className={styles.breadcrumbsWrapper}>
           {breadcrumbs.map(({ match, breadcrumb }, index) => (
-            <React.Fragment key={match.pathname}  >
+            <React.Fragment key={match.pathname} >
               <NavLink to={match.pathname} className={styles.breadcrumb}>
                 {breadcrumb}
               </NavLink>
@@ -88,8 +88,8 @@ const Breadcrumbs = () => {
           ))}
         </div>
       </div>
-    </div>
-  );
+    </div >
+  )
 }
 
-export default Breadcrumbs;
+export default Breadcrumbs

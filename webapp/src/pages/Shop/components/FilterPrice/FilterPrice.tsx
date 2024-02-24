@@ -2,7 +2,7 @@ import React from 'react'
 import ReactSlider from 'react-slider'
 import styles from './FilterPrice.module.scss'
 
-import { Heading } from '../../../../components'
+import Heading from '@components/Heading'
 
 export interface FilterPriceProps {
   onMinPriceChange: (minPrice: number) => void

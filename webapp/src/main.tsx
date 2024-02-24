@@ -17,10 +17,10 @@ import {
   ObservableSubscription
 } from '@apollo/client'
 
-import 'video-react/dist/video-react.css'; // import css
+import 'video-react/dist/video-react.css'
 
-import { clearToken } from './store/reducers'
-import { store } from './store'
+import { clearToken } from '@store/reducers'
+import { store } from '@store'
 import App from './App'
 
 const cache = new InMemoryCache()

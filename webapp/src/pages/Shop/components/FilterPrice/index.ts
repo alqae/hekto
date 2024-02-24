@@ -1,1 +1,1 @@
-export { default as FilterPrice } from './FilterPrice'
+export { default } from './FilterPrice'

@@ -9,7 +9,10 @@ import {
   Route,
 } from 'react-router-dom'
 
-import { Fallback, FormLayout, Layout, NoMatch } from './components'
+import NoMatch from '@components/NoMatch'
+import Layout from '@components/Layout'
+import Fallback from '@components/Fallback'
+import FormLayout from '@components/FormLayout'
 import {
   Home,
   About,
@@ -53,13 +56,13 @@ const router = createBrowserRouter(
 
 const App = () => {
   return (
-    <React.Fragment>
+    <>
       <Toaster containerClassName="toast" />
       <AnimatePresence>
         <RouterProvider router={router} fallbackElement={<Fallback />} />
       </AnimatePresence>
-    </React.Fragment>
+    </>
   )
 }
 
-export default App;
+export default App

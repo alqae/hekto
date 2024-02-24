@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import styles from './Carousel.module.scss'
 import { AnimationProps, motion, useDragControls } from 'framer-motion'
 
-import { usePrevious } from '../../hooks'
+import { usePrevious } from '@hooks/usePrevious'
 
 const transition: AnimationProps['transition'] = {
   duration: 0.8,
@@ -25,12 +25,12 @@ export interface CarouselProps {
   className?: string
 }
 
-export const Carousel: React.FC<CarouselProps> = ({
+const Carousel: React.FC<CarouselProps> = ({
   slides,
   wrapperThumbnailClassName,
   wrapperSlideClassName,
-  showThumbnail = true,
-  autoPlay = false,
+  showThumbnail,
+  autoPlay,
   className,
 }) => {
   const [currentSlide, setCurrentSlide] = React.useState(0)
@@ -113,3 +113,10 @@ export const Carousel: React.FC<CarouselProps> = ({
     </div>
   )
 }
+
+Carousel.defaultProps = {
+  showThumbnail: true,
+  autoPlay: false,
+}
+
+export default Carousel

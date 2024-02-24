@@ -8,9 +8,12 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { AiOutlineMail, AiOutlineLock } from 'react-icons/ai'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 
-import { useActivateUserMutation, useSignInMutation } from '../../generated/graphql'
-import { Button, Field, Heading, Paragraph } from '../../components'
-import { setToken } from '../../store/reducers'
+import { useActivateUserMutation, useSignInMutation } from '@graphql'
+import Paragraph from '@components/Paragraph'
+import { setToken } from '@store/reducers'
+import Heading from '@components/Heading'
+import Button from '@components/Button'
+import Field from '@components/Field'
 
 interface Props { }
 

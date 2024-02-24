@@ -26,7 +26,9 @@ export * from './Dropdown'
 export * from './ProductCard'
 export * from './Loader'
 // export * from './Tabs'
-export { Carousel } from './Carousel'
-export {Tabs} from './Tabs';
-export {Counter} from './Counter';
-export {Pagination} from './Pagination';
+export * from './Carousel'
+export * from './Tabs'
+export * from './Counter'
+export * from './Pagination'
+export * from './ImageViewer'
+export * from './Rate'

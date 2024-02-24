@@ -75,7 +75,7 @@ import {
   app.use(bodyParser.json())
   app.use(morgan(":graphql-query"))
   app.use(morganMiddleware)
-  const PORT = process.env.PORT || 3000
+  const PORT = process.env.PORT || 4000
 
   await AppDataSource.initialize()
 

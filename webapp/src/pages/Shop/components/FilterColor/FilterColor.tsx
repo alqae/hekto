@@ -1,8 +1,9 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { useFindColorsQuery } from '../../../../generated/graphql'
-import { Checkbox, Heading } from '../../../../components'
+import { useFindColorsQuery } from '@graphql'
+import Checkbox from '@components/Checkbox'
+import Heading from '@components/Heading'
 import { SearchForm } from '../../Shop'
 
 export interface FilterColorProps { }
@@ -11,8 +12,8 @@ const FilterColor: React.FC<FilterColorProps> = () => {
   const { data } = useFindColorsQuery()
   const { register, watch } = useFormContext<SearchForm>()
 
-  return(
-    <React.Fragment>
+  return (
+    <>
       <Heading level={4} size="sm">Filter By Color</Heading>
       <div className="d-flex gap-1 flex-wrap">
         {data?.colors?.map((color) => (
@@ -34,7 +35,7 @@ const FilterColor: React.FC<FilterColorProps> = () => {
           />
         ))}
       </div>
-    </React.Fragment>
+    </>
   )
 }
 

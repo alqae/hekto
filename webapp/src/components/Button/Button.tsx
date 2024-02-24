@@ -22,6 +22,7 @@ const Button: React.FC<Props> = ({
 }) => {
   return (
     <button
+      {...props}
       className={classNames(
         styles.button,
         {
@@ -32,8 +33,9 @@ const Button: React.FC<Props> = ({
           [styles.transparent]: transparent,
           [className ?? '']: className,
         },
-      )} {...props}
-      >{children}
+      )}
+    >
+      {children}
     </button>
   );
 }

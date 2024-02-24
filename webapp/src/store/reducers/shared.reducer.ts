@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-import { Color, Product, Size } from '../../generated/graphql'
+import { Color, Product, Size } from '@graphql'
 
 export interface ShoppingCartProduct {
   size?: Size
@@ -41,12 +41,17 @@ const SharedSlice = createSlice({
     clearShoppingCart(state) {
       state.shoppingCart = []
     },
-    updateProductQuantity(state, action: PayloadAction<{ id: number } & Partial<ShoppingCartProduct>>) {
-      // const { id, quantity } = action.payload
-      // const productIndex = state.shoppingCart.findIndex((product) => product.id === id)
-      // if (productIndex !== -1) {
-      //   state.shoppingCart[productIndex]. = quantity
-      // }
+    updateProductQuantity(state, action: PayloadAction<{ index: number, quantity: number }>) {
+      // state.shoppingCart[action.payload.index].quantity = action.payload.quantity
+      state.shoppingCart = state.shoppingCart.map((product, index) => {
+        if (index === action.payload.index) {
+          return {
+            ...product,
+            quantity: action.payload.quantity,
+          }
+        }
+        return product
+      })
     }
   },
 })
